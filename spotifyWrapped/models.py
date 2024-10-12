@@ -25,7 +25,7 @@ class SpotifyWrap(models.Model):
     year = models.IntegerField()
 
     class Meta:
-        unique_together = ('user_profile', 'year')
+        unique_together = ('user', 'year')
 
 class DuoWrapped(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

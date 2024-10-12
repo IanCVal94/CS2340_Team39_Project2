@@ -121,28 +121,12 @@ def spotify_login(request):
 
 
 def spotify_callback(request):
-    """
-    Handle Spotify's response after user authentication.
-    """
-    error = request.GET.get('error')
-    if error:
-        messages.error(request, "Spotify authentication failed.")
-        return redirect('login')
-
-    state = request.GET.get('state')
-    stored_state = request.session.get('spotify_auth_state')
-
-    # Check for state mismatch for security
-    if not stored_state or state != stored_state:
-        messages.error(request, "State mismatch. Please try again.")
-        return redirect('login')
-
     code = request.GET.get('code')
     if not code:
-        messages.error(request, "Authorization code missing.")
+        messages.error(request, "Authorization code not found.")
         return redirect('login')
 
-    # Exchange authorization code for access token
+    # Exchange code for access token
     auth_str = f"{settings.SPOTIFY_CLIENT_ID}:{settings.SPOTIFY_CLIENT_SECRET}"
     b64_auth_str = base64.b64encode(auth_str.encode()).decode()
 
@@ -156,53 +140,43 @@ def spotify_callback(request):
         'redirect_uri': 'http://localhost:8000/spotify/callback/'
     }
 
-    response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data)
-    if response.status_code != 200:
-        messages.error(request, "Failed to obtain access token from Spotify.")
+    token_response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data)
+    if token_response.status_code != 200:
+        print(f"Token exchange failed: {token_response.content}")
+        messages.error(request, "Failed to obtain access token.")
         return redirect('login')
 
-    token_info = response.json()
+    token_info = token_response.json()
     access_token = token_info.get('access_token')
     refresh_token = token_info.get('refresh_token')
     expires_in = token_info.get('expires_in')  # in seconds
     expires_at = timezone.now() + timedelta(seconds=expires_in)
 
-    # Store the access token in the user's profile
-    user_profile = request.user.userprofile
-    user_profile.spotify_access_token = access_token
-    user_profile.spotify_refresh_token = refresh_token
-    user_profile.token_expires_at = expires_at
-    user_profile.save()
-
-    # Fetch the user's Spotify profile using the access token
+    # Fetch Spotify user info
     headers = {
-        'Authorization': f'Bearer {access_token}',
+        'Authorization': f'Bearer {access_token}'
     }
-    user_response = requests.get(f"{SPOTIFY_API_BASE_URL}/me", headers=headers)
-    if user_response.status_code != 200:
-        messages.error(request, "Failed to fetch Spotify user profile.")
+    spotify_user_response = requests.get(f"{SPOTIFY_API_BASE_URL}/me", headers=headers)
+    if spotify_user_response.status_code != 200:
+        messages.error(request, "Failed to fetch Spotify user information.")
         return redirect('login')
 
-    spotify_user_id = user_response.json().get('id')
-    user_profile.spotify_user_id = spotify_user_id
-    user_profile.save()
+    spotify_user_info = spotify_user_response.json()
+    spotify_user_id = spotify_user_info['id']
 
-    messages.success(request, "Spotify account successfully connected!")
-    return redirect('profile')
-
-    # Ensure user is authenticated on the website
+    # Link Spotify user to Django user
     if request.user.is_authenticated:
-        user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+        user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
         user_profile.spotify_user_id = spotify_user_id
         user_profile.spotify_access_token = access_token
         user_profile.spotify_refresh_token = refresh_token
         user_profile.token_expires_at = expires_at
         user_profile.save()
 
-        messages.success(request, "Spotify account successfully connected!")
+        messages.success(request, "Spotify account connected successfully.")
         return redirect('profile')
     else:
-        messages.error(request, "User authentication failed.")
+        messages.error(request, "You must be logged in to link your Spotify account.")
         return redirect('login')
 
 @login_required
@@ -252,10 +226,9 @@ def wrapped_presentation(request):
 @login_required
 def profile_view(request):
     user_profile = request.user.userprofile
-    wraps = SpotifyWrap.objects.filter(user_profile=user_profile)
+    wraps = SpotifyWrap.objects.filter(user=request.user)  # Use 'user' instead of 'user_profile'
 
-    spotify_data = fetch_spotify_data(user_profile)
-    return render(request, 'profile.html', {'wraps': wraps, 'spotify_data': spotify_data})
+    return render(request, 'profile.html', {'wraps': wraps})
 
 @login_required
 def delete_account(request):
@@ -272,15 +245,10 @@ def delete_account(request):
 
 @login_required
 def delete_wrap(request, wrap_id):
-    try:
-        wrap = SpotifyWrap.objects.get(id=wrap_id, user_profile=request.user.userprofile)
-        wrap.delete()
-        messages.success(request, "Wrap deleted successfully.")
-    except SpotifyWrap.DoesNotExist:
-        messages.error(request, "Wrap not found.")
-
+    wrap = SpotifyWrap.objects.get(id=wrap_id, user_profile=request.user.userprofile)
+    wrap.delete()
+    messages.success(request, "Wrap deleted successfully.")
     return redirect('profile')
-
 
 @login_required
 def past_wraps_view(request):
