@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Spotify Wrapped{% endblock %}
+
+{% block content %}
+<div id="slides">
+    <div class="slide" id="slide1">
+        <h2>Your Top Artists</h2>
+        <ul>
+            {% for artist in spotify_data.top_artists.items %}
+                <li>{{ artist.name }} - {{ artist.genres|join:", " }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="slide" id="slide2">
+        <h2>Your Top Tracks</h2>
+        <ul>
+            {% for track in spotify_data.top_tracks.items %}
+                <li>{{ track.name }} by {{ track.artists|join:", " }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="slide" id="slide3">
+        <h2>Recently Played</h2>
+        <ul>
+            {% for item in spotify_data.recent_played.items %}
+                <li>{{ item.track.name }} by {{ item.track.artists|join:", " }} on {{ item.played_at }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Add more slides as needed -->
+</div>
+
+<div class="navigation">
+    <button onclick="prevSlide()">Previous Slide</button>
+    <button onclick="nextSlide()">Next Slide</button>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 3; // Update based on number of slides
+
+    function showSlide(n) {
+        for (let i = 1; i <= totalSlides; i++) {
+            document.getElementById(`slide${i}`).style.display = 'none';
+        }
+        document.getElementById(`slide${n}`).style.display = 'block';
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide % totalSlides) + 1;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 2 + totalSlides) % totalSlides + 1;
+        showSlide(currentSlide);
+    }
+
+    // Initialize the first slide
+    showSlide(currentSlide);
+</script>
+
+<style>
+    .slide {
+        display: none;
+    }
+</style>
+{% endblock %}

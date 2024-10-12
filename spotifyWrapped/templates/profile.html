@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h2>Your Profile</h2>
+<p>Welcome, {{ user.username }}!</p>
+
+{% if request.session.spotify_user %}
+    <h3>Your Spotify Wrapped:</h3>
+    <ul>
+        {% for wrap in wraps %}
+            <li>
+                <a href="{% url 'wrapped_detail' wrap.id %}">{{ wrap.year }} - {{ wrap.most_played_song }}</a>
+                <a href="{% url 'delete_wrap' wrap.id %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No wraps created yet.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Your Top Artists:</h3>
+    <ul>
+        {% for artist in top_artists %}
+            <li>{{ artist.name }} - Genres: {{ artist.genres|join:", " }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Your Top Tracks:</h3>
+    <ul>
+        {% for track in top_tracks %}
+            <li>{{ track.name }} by {{ track.artist_names }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Recently Played:</h3>
+    <ul>
+        {% for item in recent_played %}
+            <li>{{ item.track.name }} by {{ item.artist_names }} on {{ item.played_at }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Your Spotify account is not connected yet or we couldn't retrieve your data.</p>
+    <a href="{% url 'spotify_login' %}">Connect Spotify</a>
+{% endif %}
+
+<a href="{% url 'logout' %}">Logout</a>
+{% endblock %}

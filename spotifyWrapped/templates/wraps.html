@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Spotify Wraps{% endblock %}
+
+{% block content %}
+<h2>Your Spotify Wraps</h2>
+<ul>
+    {% for wrap in wraps %}
+        <li>
+            <a href="{% url 'wrapped_detail' wrap.id %}">{{ wrap.year }} - {{ wrap.most_played_song }}</a>
+            <a href="{% url 'delete_wrap' wrap.id %}">Delete</a>
+        </li>
+    {% empty %}
+        <li>No wraps created yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
