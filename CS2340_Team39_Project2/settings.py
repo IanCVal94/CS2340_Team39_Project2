@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,8 +25,6 @@ DEBUG = True
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # Load environment variables
-from dotenv import load_dotenv
-load_dotenv()
 
 # Spotify Credentials
 SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')

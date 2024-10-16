@@ -3,7 +3,7 @@ import requests
 import base64
 import urllib.parse
 from datetime import datetime, timedelta
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -25,7 +25,9 @@ from django.utils import timezone
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'
 SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token'
 SPOTIFY_API_BASE_URL = 'https://api.spotify.com/v1'
-SPOTIFY_SCOPE = 'user-top-read user-read-recently-played'
+SPOTIFY_SCOPE_WRAPPED = 'user-top-read user-read-recently-played'
+SPOTIFY_SCOPE = 'user-read-email user-read-private'
+
 
 def fetch_spotify_data(user_profile):
     try:
@@ -87,18 +89,30 @@ def login_view(request):
             login(request, user)
             # If user has Spotify tokens, redirect to profile
             if hasattr(user, 'UserProfile') and user.UserProfile.spotify_access_token:
+                print("1")
                 return redirect('profile')
             else:
                 # Redirect to Spotify login
+                print("2")
                 return redirect('spotify_login')
+
         else:
             messages.error(request, "Invalid username or password")
     return render(request, 'login.html')
 
 
-def logout_view(request):
+
+def spotify_logout(request):
+    """
+    Logs the user out of the Django session and redirects to Spotify's logout page.
+    """
+    # Log out of Django
     logout(request)
+
+    # Flush session data
     request.session.flush()
+
+    # Render an intermediate page that will redirect to Spotify and then back to your app
     return redirect('login')
 
 
@@ -107,16 +121,18 @@ def spotify_login(request):
     Direct user to Spotify's authorization page.
     """
     client_id = settings.SPOTIFY_CLIENT_ID
+    print("Check 3")
     redirect_uri = 'http://localhost:8000/spotify/callback/'  # Adjust for your environment
     scope = SPOTIFY_SCOPE
     state = base64.urlsafe_b64encode(os.urandom(16)).decode('utf-8')
-
+    print("Check 1")
     request.session['spotify_auth_state'] = state  # Store state in session for CSRF protection
-
+    print("Check 2 ")
     auth_url = (
         f"{SPOTIFY_AUTH_URL}?response_type=code&client_id={client_id}"
         f"&scope={urllib.parse.quote(scope)}&redirect_uri={urllib.parse.quote(redirect_uri)}&state={state}"
     )
+    print(auth_url)
     return redirect(auth_url)
 
 
@@ -134,6 +150,7 @@ def spotify_callback(request):
         'Authorization': f'Basic {b64_auth_str}',
         'Content-Type': 'application/x-www-form-urlencoded'
     }
+
     data = {
         'grant_type': 'authorization_code',
         'code': code,
@@ -151,19 +168,22 @@ def spotify_callback(request):
     refresh_token = token_info.get('refresh_token')
     expires_in = token_info.get('expires_in')  # in seconds
     expires_at = timezone.now() + timedelta(seconds=expires_in)
-
+    print(token_info)
     # Fetch Spotify user info
     headers = {
         'Authorization': f'Bearer {access_token}'
     }
     spotify_user_response = requests.get(f"{SPOTIFY_API_BASE_URL}/me", headers=headers)
+    print(spotify_user_response.text)
+    print(spotify_user_response.status_code)
+    print(spotify_user_response.headers)
+    #ISSUE ABOVE ^^
     if spotify_user_response.status_code != 200:
         messages.error(request, "Failed to fetch Spotify user information.")
         return redirect('login')
 
     spotify_user_info = spotify_user_response.json()
     spotify_user_id = spotify_user_info['id']
-
     # Link Spotify user to Django user
     if request.user.is_authenticated:
         user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
@@ -172,7 +192,7 @@ def spotify_callback(request):
         user_profile.spotify_refresh_token = refresh_token
         user_profile.token_expires_at = expires_at
         user_profile.save()
-
+        print("SUCCESS")
         messages.success(request, "Spotify account connected successfully.")
         return redirect('profile')
     else:
@@ -225,9 +245,10 @@ def wrapped_presentation(request):
 
 @login_required
 def profile_view(request):
-    user_profile = request.user.userprofile
-    wraps = SpotifyWrap.objects.filter(user=request.user)  # Use 'user' instead of 'user_profile'
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+    print(user_profile.spotify_user_id)
 
+    wraps = SpotifyWrap.objects.filter(user=request.user)  # Use 'user' instead of 'user_profile'
     return render(request, 'profile.html', {'wraps': wraps})
 
 @login_required
