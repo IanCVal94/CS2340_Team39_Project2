@@ -18,7 +18,7 @@ class UserProfile(models.Model):
         return self.user.username
 
 class SpotifyWrap(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=1)
     total_minutes_watched = models.IntegerField(default=0)
     top_artists = models.TextField(blank=True, null=True)
     most_played_song = models.CharField(max_length=255, blank=True, null=True)
