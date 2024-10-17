@@ -4,4 +4,5 @@ web: gunicorn config.wsgi
 # migrations are run as part of app deployment, using Heroku's Release Phase feature:
 # https://docs.djangoproject.com/en/5.1/topics/migrations/
 # https://devcenter.heroku.com/articles/release-phase
-release: ./manage.py migrate --no-input
+# NEED TO FIX THIS AND GET THIS WORKING ONCE THE DATABASE IS SETUP COMPLETELY AND ALL WORKS
+# release: ./manage.py migrate --no-input
