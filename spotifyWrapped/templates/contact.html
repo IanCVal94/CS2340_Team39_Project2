@@ -3,18 +3,37 @@
 {% block title %}Contact Us{% endblock %}
 
 {% block content %}
-<h2>Contact Us</h2>
-<form method="POST">
-    {% csrf_token %}
-    <label for="subject">Subject:</label>
-    <input type="text" name="subject" required>
+<h2>Contact the Developers</h2>
 
-    <label for="message">Message:</label>
-    <textarea name="message" required></textarea>
+<!-- Development Team Section -->
+<section id="team">
+    <h3>Meet the Development Team</h3>
+    <p>We are Team 39 from CS 2340, dedicated to building user-friendly and robust applications. Our team is composed of:</p>
+    <ul>
+        <li>Ian Valderas: Role - Full-Stack Developer and Scrum Master</li>
+        <li>Ilkin Mammadli: Role - Full-Stack Developer and Product Owner</li>
+        <li>Jack English: Role - Frontend Developer</li>
+        <li>Zach Keschner: Role - Backend Developer</li>
+        <li>Oliver Thor: Role - Backend Developer</li>
+    </ul>
+</section>
 
-    <button type="submit">Send Message</button>
-</form>
+<!-- Contact Form -->
+<h3>Send Us Your Feedback</h3>
+<div>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="subject">Subject:</label>
+        <input type="text" name="subject" placeholder="Enter your subject" required>
 
+        <label for="message">Message:</label>
+        <textarea name="message" placeholder="Type your message here" required></textarea>
+
+        <button type="submit">Send Message</button>
+    </form>
+    <p>{{ result }}</p>
+</div>
+<!-- Display Success/Error Messages -->
 {% if messages %}
     <ul>
         {% for message in messages %}
@@ -22,4 +41,5 @@
         {% endfor %}
     </ul>
 {% endif %}
+
 {% endblock %}

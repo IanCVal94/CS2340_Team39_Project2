@@ -17,6 +17,7 @@ from django.contrib.auth.models import User
 from .utils import refresh_spotify_token
 from django.utils.timezone import now
 from django.utils import timezone
+from django.core.mail import send_mail
 
 
 
@@ -189,20 +190,20 @@ def duo_wrapped(request, duo_id):
     return render(request, 'duo_wrapped.html', {'duo': duo})
 
 def contact_view(request):
+    context = {}
     if request.method == 'POST':
-        # Handle form submission (e.g., send email)
         subject = request.POST.get('subject')
         message = request.POST.get('message')
-        user_email = request.user.email if request.user.is_authenticated else 'Anonymous'
 
-        # Implement email sending logic here using Django's EmailMessage or similar
-        # Example:
-        # from django.core.mail import send_mail
-        # send_mail(subject, message, user_email, ['support@spotifywrapper.com'])
-
-        messages.success(request, "Your message has been sent. We'll get back to you shortly.")
-        return redirect('contact')
-    return render(request, 'contact.html')
+        if subject and message:
+            try:
+                send_mail(subject, message, settings.EMAIL_HOST_USER, [settings.CONTACT_EMAIL])
+                context['result'] = 'Email sent successfully'
+            except Exception as e:
+                context['result'] = f'Error sending email: {e}'
+        else:
+            context['result'] = 'All fields are required'
+    return render(request, "contact.html", context)
 
 @login_required
 def wrapped_presentation(request):
