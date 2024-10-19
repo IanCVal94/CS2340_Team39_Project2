@@ -1,24 +1,24 @@
+"""
+Views for handling user authentication, Spotify integration, and app functionality.
+"""
 import os
 import requests
 import base64
 import urllib.parse
 from datetime import datetime, timedelta
+
+import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from requests import request
+from django.contrib import messages
+from django.utils import timezone
+from django.core.mail import send_mail
 
 from .forms import UserRegisterForm
 from .models import SpotifyWrap, DuoWrapped, UserProfile
-from django.contrib.auth import logout
-from django.contrib import messages
-from django.contrib.auth.models import User
 from .utils import refresh_spotify_token
-from django.utils.timezone import now
-from django.utils import timezone
-
-
 
 
 # Spotify OAuth Constants
@@ -30,11 +30,20 @@ SPOTIFY_SCOPE = 'user-read-email user-read-private'
 
 
 def fetch_spotify_data(user_profile):
+    """
+    Fetches Spotify data (top artists, top tracks, and recently played tracks) for the user.
+
+    Args:
+        user_profile (UserProfile): The user profile containing the Spotify access token.
+
+    Returns:
+        dict: Spotify data containing top artists, top tracks, and recently played tracks.
+        None: If data fetch fails.
+    """
     try:
         if user_profile.token_expires_at <= timezone.now():
             refreshed = refresh_spotify_token(user_profile)
             if not refreshed:
-                messages.error(request, "Failed to refresh Spotify token.")
                 return None
 
         # Set up the authorization header with the access token
@@ -63,10 +72,19 @@ def fetch_spotify_data(user_profile):
         return None
 
 def index(request):
+    """
+    Renders the index page.
+    """
     return render(request, 'index.html')
 
 
 def signup_view(request):
+    """
+    Handles user signup and registration.
+
+    Args:
+        request (HttpRequest): The request object containing the form data.
+    """
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -81,6 +99,12 @@ def signup_view(request):
 
 
 def login_view(request):
+    """
+    Handles user login and authentication.
+
+    Args:
+        request (HttpRequest): The request object containing the login form data.
+    """
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -101,12 +125,13 @@ def login_view(request):
     return render(request, 'login.html')
 
 
+def logout_view(request):
+    """
+    Logs the user out and clears the session.
 
-def spotify_logout(request):
+    Args:
+        request (HttpRequest): The request object.
     """
-    Logs the user out of the Django session and redirects to Spotify's logout page.
-    """
-    # Log out of Django
     logout(request)
 
     # Flush session data
@@ -118,7 +143,7 @@ def spotify_logout(request):
 
 def spotify_login(request):
     """
-    Direct user to Spotify's authorization page.
+    Redirects the user to Spotify's authorization page.
     """
     client_id = settings.SPOTIFY_CLIENT_ID
     print("Check 3")
@@ -137,6 +162,9 @@ def spotify_login(request):
 
 
 def spotify_callback(request):
+    """
+    Handles Spotify OAuth callback and token exchange.
+    """
     code = request.GET.get('code')
     if not code:
         messages.error(request, "Authorization code not found.")
@@ -201,31 +229,46 @@ def spotify_callback(request):
 
 @login_required
 def wrapped_detail(request, wrap_id):
+    """
+    Displays the details of a specific Spotify wrap.
+    """
     wrap = SpotifyWrap.objects.get(id=wrap_id, user_profile=request.user.userprofile)
     return render(request, 'wrapped_detail.html', {'wrap': wrap})
 
 def duo_wrapped(request, duo_id):
+    """
+    Displays the details of a duo Spotify wrap.
+    """
     duo = DuoWrapped.objects.get(id=duo_id)
     return render(request, 'duo_wrapped.html', {'duo': duo})
 
 def contact_view(request):
+    """
+    Handles the contact form and sends an email.
+
+    Args:
+        request (HttpRequest): The request object containing the form data.
+    """
+    context = {}
     if request.method == 'POST':
-        # Handle form submission (e.g., send email)
         subject = request.POST.get('subject')
         message = request.POST.get('message')
-        user_email = request.user.email if request.user.is_authenticated else 'Anonymous'
 
-        # Implement email sending logic here using Django's EmailMessage or similar
-        # Example:
-        # from django.core.mail import send_mail
-        # send_mail(subject, message, user_email, ['support@spotifywrapper.com'])
-
-        messages.success(request, "Your message has been sent. We'll get back to you shortly.")
-        return redirect('contact')
-    return render(request, 'contact.html')
+        if subject and message:
+            try:
+                send_mail(subject, message, settings.EMAIL_HOST_USER, [settings.CONTACT_EMAIL])
+                context['result'] = 'Email sent successfully'
+            except Exception as e:
+                context['result'] = f'Error sending email: {e}'
+        else:
+            context['result'] = 'All fields are required'
+    return render(request, "contact.html", context)
 
 @login_required
 def wrapped_presentation(request):
+    """
+    Fetches Spotify data and creates a wrap for the user.
+    """
     user_profile = request.user.userprofile
     spotify_data = fetch_spotify_data(user_profile)
 
@@ -245,6 +288,9 @@ def wrapped_presentation(request):
 
 @login_required
 def profile_view(request):
+    """
+    Displays the user's profile with their past wraps.
+    """
     user_profile = get_object_or_404(UserProfile, user=request.user)
     print(user_profile.spotify_user_id)
 
@@ -253,6 +299,9 @@ def profile_view(request):
 
 @login_required
 def delete_account(request):
+    """
+    Deletes the user's account and associated Spotify wraps.
+    """
     if request.method == 'POST':
         user_profile = request.user.userprofile
         user = request.user
@@ -266,6 +315,9 @@ def delete_account(request):
 
 @login_required
 def delete_wrap(request, wrap_id):
+    """
+    Deletes a specific Spotify wrap for the user.
+    """
     wrap = SpotifyWrap.objects.get(id=wrap_id, user_profile=request.user.userprofile)
     wrap.delete()
     messages.success(request, "Wrap deleted successfully.")
@@ -273,6 +325,9 @@ def delete_wrap(request, wrap_id):
 
 @login_required
 def past_wraps_view(request):
+    """
+    Displays the past Spotify wraps for the logged-in user.
+    """
     # Fetch the past wraps for the logged-in user
     user = request.user  # This fetches the logged-in user
     wraps = SpotifyWrap.objects.filter(user=user)  # Fetch past wrap data for the user

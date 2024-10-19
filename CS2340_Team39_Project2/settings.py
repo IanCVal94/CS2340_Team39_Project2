@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+from django.contrib import staticfiles
 from dotenv import load_dotenv
 load_dotenv()
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,14 +24,17 @@ DEBUG = True
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# Load environment variables
-
 # Spotify Credentials
 SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
 SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
 SPOTIFY_REDIRECT_URI='http://localhost:8000/spotify/callback/'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'spotify2340group39wrapped-5837b7a20855.herokuapp.com'
+]
+
 
 # Application definition
 
@@ -123,9 +126,28 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Add this line to define the directory where static files will be collected
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# If you plan to store static files manually in the app
+# STATICFILES_DIRS = [
+    # This is where you can store custom static files
+# ]
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+CONTACT_EMAIL = 'ianvalderas289@gmail.com'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'group39cs2340@gmail.com'
+EMAIL_HOST_PASSWORD = 'kgep hzsu zway hdtq'
+
