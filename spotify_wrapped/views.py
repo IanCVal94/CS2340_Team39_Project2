@@ -140,7 +140,8 @@ def spotify_login(request):
 
     auth_url = (
         f"{SPOTIFY_AUTH_URL}?response_type=code&client_id={client_id}"
-        f"&scope={urllib.parse.quote(scope)}&redirect_uri={urllib.parse.quote(redirect_uri)}&state={state}"
+        f"&scope={urllib.parse.quote(scope)}&redirect_uri={urllib.parse.quote(redirect_uri)}"
+        f"&state={state}"
     )
     return redirect(auth_url)
 
@@ -222,8 +223,12 @@ def wrapped_presentation(request):
     if spotify_data:
         SpotifyWrap.objects.create(
             user_profile=user_profile,
-            total_minutes_listened=spotify_data['recent_played'].get('total', 0),
-            top_artists=", ".join([artist['name'] for artist in spotify_data['top_artists']['items']]),
+            total_minutes_listened=spotify_data['recent_played'].get(
+                'total', 0
+            ),
+            top_artists=", ".join(
+                [artist['name'] for artist in spotify_data['top_artists']['items']]
+            ),
             most_played_song=spotify_data['top_tracks']['items'][0]['name'] if spotify_data['top_tracks']['items'] else '',
             year=datetime.now().year
         )

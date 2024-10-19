@@ -38,6 +38,11 @@ class SpotifyWrap(models.Model):
     year = models.IntegerField()
 
     class Meta:
+        """
+        Meta options to enforce unique constraints for Spotify wrapped data.
+
+        Ensures that each user has only one SpotifyWrap per year.
+        """
         constraints = [
             models.UniqueConstraint(fields=['user', 'year'], name='unique_spotify_wrap_per_year')
         ]
