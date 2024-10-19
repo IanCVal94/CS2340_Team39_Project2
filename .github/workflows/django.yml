@@ -1,0 +1,45 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.10, 3.11, 3.12]  # List of Python versions to check
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}  # Runs with each Python version in the matrix
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
+
+    - name: Lint code (pylint)
+      run: |
+        source venv/bin/activate
+        pip install pylint
+        pylint spotifyWrapped/
+
+    - name: Run tests with coverage
+      run: |
+        source venv/bin/activate
+        pip install pytest coverage
+        coverage run -m pytest
+        coverage report --fail-under=80  # Fail if coverage is below 80%
+
