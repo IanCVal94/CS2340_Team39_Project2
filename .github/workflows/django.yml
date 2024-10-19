@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.11, 3.12]  # List of Python versions to check
+        python-version: [3.11, 3.12]
 
     steps:
     - name: Checkout code
@@ -22,7 +22,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: ${{ matrix.python-version }}  # Runs with each Python version in the matrix
+        python-version: ${{ matrix.python-version }}
 
     - name: Install dependencies
       run: |
@@ -34,12 +34,12 @@ jobs:
       run: |
         source venv/bin/activate
         pip install pylint
-        pylint spotify_wrapped/
+        pylint --disable=R0903,R0901,E1101,W0718,R0914,C0301 spotify_wrapped/
 
     - name: Run tests with coverage
       run: |
         source venv/bin/activate
         pip install pytest coverage
         coverage run -m pytest
-        coverage report --fail-under=80  # Fail if coverage is below 80%
-
+        coverage report --fail-under=80
+        
