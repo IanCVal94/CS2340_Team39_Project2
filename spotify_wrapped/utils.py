@@ -1,12 +1,26 @@
-import requests
+"""
+Utility functions for Spotify OAuth and token management.
+"""
 import base64
 from datetime import datetime, timedelta
-from django.conf import settings
-from .models import UserProfile
 
+import requests
+from django.conf import settings
+
+# Spotify Token URL
 SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token'
 
+
 def refresh_spotify_token(user_profile):
+    """
+    Refreshes the Spotify access token for the given user profile.
+
+    Args:
+        user_profile (UserProfile): The user profile with the refresh token.
+
+    Returns:
+        bool: True if the token was refreshed successfully, False otherwise.
+    """
     auth_str = f"{settings.SPOTIFY_CLIENT_ID}:{settings.SPOTIFY_CLIENT_SECRET}"
     b64_auth_str = base64.b64encode(auth_str.encode()).decode()
 
@@ -19,7 +33,7 @@ def refresh_spotify_token(user_profile):
         'refresh_token': user_profile.spotify_refresh_token
     }
 
-    response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data)
+    response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data, timeout=10)
     if response.status_code != 200:
         return False
 

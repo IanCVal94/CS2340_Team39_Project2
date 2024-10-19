@@ -1,3 +1,6 @@
+"""
+URL configuration for handling app views and Spotify OAuth routes.
+"""
 from django.urls import path
 from . import views
 

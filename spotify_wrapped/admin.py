@@ -6,7 +6,7 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'bio', 'profile_picture', 'favorite_genres', 'created_at')
 
 class SpotifyWrapAdmin(admin.ModelAdmin):
-    list_display = ('user', 'total_minutes_watched', 'top_artists', 'most_played_song', 'year')
+    list_display = ('user', 'total_minutes_listened', 'top_artists', 'most_played_song', 'year')
 
 class DuoWrappedAdmin(admin.ModelAdmin):
     list_display = ('user_profile', 'partner_username', 'total_duo_sessions', 'favorite_duo_song', 'shared_minutes')

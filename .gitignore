@@ -73,4 +73,4 @@ db.sqlite3
 .idea/
 .venv/
 venv/
-/spotifyWrapped/migrations
+/spotify_wrapped/migrations
