@@ -34,7 +34,7 @@ jobs:
       run: |
         source venv/bin/activate
         pip install pylint
-        pylint spotifyWrapped/
+        pylint spotify_wrapped/
 
     - name: Run tests with coverage
       run: |
