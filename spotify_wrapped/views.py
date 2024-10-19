@@ -18,6 +18,7 @@ from django.core.mail import send_mail
 from .forms import UserRegisterForm
 from .models import SpotifyWrap, DuoWrapped, UserProfile
 from .utils import refresh_spotify_token
+from .utils import get_spotify_auth_headers
 
 
 # Spotify OAuth Constants
@@ -155,18 +156,12 @@ def spotify_callback(request):
         messages.error(request, "Authorization code not found.")
         return redirect('login')
 
-    auth_str = f"{settings.SPOTIFY_CLIENT_ID}:{settings.SPOTIFY_CLIENT_SECRET}"
-    b64_auth_str = base64.b64encode(auth_str.encode()).decode()
-
-    headers = {
-        'Authorization': f'Basic {b64_auth_str}',
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
-    data = {
+    headers, data = get_spotify_auth_headers()
+    data.update({
         'grant_type': 'authorization_code',
         'code': code,
         'redirect_uri': 'http://localhost:8000/spotify/callback/'
-    }
+    })
 
     token_response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data, timeout=10)
     if token_response.status_code != 200:

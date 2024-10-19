@@ -11,6 +11,25 @@ from django.conf import settings
 SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token'
 
 
+def get_spotify_auth_headers():
+    """
+    Generate Spotify authorization headers using client ID and secret.
+
+    Returns:
+        dict: Headers for authorization.
+        dict: Data for the token request.
+    """
+    auth_str = f"{settings.SPOTIFY_CLIENT_ID}:{settings.SPOTIFY_CLIENT_SECRET}"
+    b64_auth_str = base64.b64encode(auth_str.encode()).decode()
+
+    headers = {
+        'Authorization': f'Basic {b64_auth_str}',
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    data = {}
+
+    return headers, data
+
 def refresh_spotify_token(user_profile):
     """
     Refreshes the Spotify access token for the given user profile.
@@ -21,17 +40,11 @@ def refresh_spotify_token(user_profile):
     Returns:
         bool: True if the token was refreshed successfully, False otherwise.
     """
-    auth_str = f"{settings.SPOTIFY_CLIENT_ID}:{settings.SPOTIFY_CLIENT_SECRET}"
-    b64_auth_str = base64.b64encode(auth_str.encode()).decode()
-
-    headers = {
-        'Authorization': f'Basic {b64_auth_str}',
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
-    data = {
+    headers, data = get_spotify_auth_headers()
+    data.update({
         'grant_type': 'refresh_token',
         'refresh_token': user_profile.spotify_refresh_token
-    }
+    })
 
     response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data, timeout=10)
     if response.status_code != 200:
