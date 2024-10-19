@@ -2,11 +2,11 @@
 Views for handling user authentication, Spotify integration, and app functionality.
 """
 import os
-import requests
 import base64
 import urllib.parse
 from datetime import datetime, timedelta
 
+import requests
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth import login, authenticate, logout
@@ -45,11 +45,18 @@ def fetch_spotify_data(user_profile):
                 return None
 
         headers = {'Authorization': f'Bearer {user_profile.spotify_access_token}'}
-        artists_response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers, timeout=10)
-        tracks_response = requests.get('https://api.spotify.com/v1/me/top/tracks', headers=headers, timeout=10)
-        recent_response = requests.get('https://api.spotify.com/v1/me/player/recently-played', headers=headers, timeout=10)
+        artists_response = requests.get(
+            'https://api.spotify.com/v1/me/top/artists', headers=headers, timeout=10
+        )
+        tracks_response = requests.get(
+            'https://api.spotify.com/v1/me/top/tracks', headers=headers, timeout=10
+        )
+        recent_response = requests.get(
+            'https://api.spotify.com/v1/me/player/recently-played', headers=headers, timeout=10
+        )
 
-        if artists_response.status_code != 200 or tracks_response.status_code != 200 or recent_response.status_code != 200:
+        if (artists_response.status_code != 200 or tracks_response.status_code != 200
+                or recent_response.status_code != 200):
             print("Failed to fetch Spotify data")
             return None
 
@@ -58,7 +65,7 @@ def fetch_spotify_data(user_profile):
             'top_tracks': tracks_response.json(),
             'recent_played': recent_response.json(),
         }
-    except Exception as e:
+    except (requests.Timeout, requests.RequestException) as e:
         print(f"Error fetching Spotify data: {str(e)}")
         return None
 
@@ -101,7 +108,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            if hasattr(user, 'UserProfile') and user.UserProfile.spotify_access_token:
+            if hasattr(user, 'userprofile') and user.userprofile.spotify_access_token:
                 return redirect('profile')
             return redirect('spotify_login')
         messages.error(request, "Invalid username or password")
@@ -150,8 +157,15 @@ def spotify_callback(request):
     auth_str = f"{settings.SPOTIFY_CLIENT_ID}:{settings.SPOTIFY_CLIENT_SECRET}"
     b64_auth_str = base64.b64encode(auth_str.encode()).decode()
 
-    headers = {'Authorization': f'Basic {b64_auth_str}', 'Content-Type': 'application/x-www-form-urlencoded'}
-    data = {'grant_type': 'authorization_code', 'code': code, 'redirect_uri': 'http://localhost:8000/spotify/callback/'}
+    headers = {
+        'Authorization': f'Basic {b64_auth_str}',
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    data = {
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': 'http://localhost:8000/spotify/callback/'
+    }
 
     token_response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data, timeout=10)
     if token_response.status_code != 200:
@@ -208,7 +222,7 @@ def wrapped_presentation(request):
     if spotify_data:
         SpotifyWrap.objects.create(
             user_profile=user_profile,
-            total_minutes_watched=spotify_data['recent_played'].get('total', 0),
+            total_minutes_listened=spotify_data['recent_played'].get('total', 0),
             top_artists=", ".join([artist['name'] for artist in spotify_data['top_artists']['items']]),
             most_played_song=spotify_data['top_tracks']['items'][0]['name'] if spotify_data['top_tracks']['items'] else '',
             year=datetime.now().year
@@ -225,9 +239,7 @@ def profile_view(request):
     """
     Displays the user's profile with their past wraps.
     """
-    user_profile = request.user.userprofile
     wraps = SpotifyWrap.objects.filter(user=request.user)
-
     return render(request, 'profile.html', {'wraps': wraps})
 
 
@@ -237,7 +249,6 @@ def past_wraps_view(request):
     Displays the past Spotify wraps for the logged-in user.
     """
     wraps = SpotifyWrap.objects.filter(user=request.user)
-
     return render(request, 'wraps.html', {'wraps': wraps})
 
 

@@ -23,7 +23,7 @@ class UserProfile(models.Model):
     token_expires_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return self.user.username
+        return self.user.username  # pylint: disable=no-member
 
 
 class SpotifyWrap(models.Model):
@@ -43,7 +43,7 @@ class SpotifyWrap(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.user.username}'s Spotify Wrapped {self.year}"
+        return f"{self.user.username}'s Spotify Wrapped {self.year}"  # pylint: disable=no-member
 
 
 class DuoWrapped(models.Model):
@@ -58,4 +58,4 @@ class DuoWrapped(models.Model):
     shared_minutes = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"Duo Wrapped: {self.user_profile.user.username} and {self.partner_username}"
+        return f"Duo Wrapped: {self.user_profile.user.username} and {self.partner_username}"  # pylint: disable=no-member
