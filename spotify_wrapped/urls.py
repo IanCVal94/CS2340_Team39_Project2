@@ -8,6 +8,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('login/', views.login_view, name='login'),
     path('profile/', views.profile_view, name='profile'),
+    path('wraps/', views.wraps_view, name='wraps'),
     path('logout/', views.logout_view, name='logout'),
     path('contact/', views.contact_view, name='contact'),
     # Spotify OAuth URLs

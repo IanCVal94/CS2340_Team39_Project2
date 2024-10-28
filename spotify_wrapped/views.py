@@ -2,6 +2,7 @@
 Views for handling user authentication, Spotify integration, and app functionality.
 """
 import os
+import time
 import base64
 import urllib.parse
 from datetime import datetime, timedelta
@@ -117,7 +118,11 @@ def spotify_callback(request):
     spotify_username = spotify_user_info.get('display_name', spotify_user_id)
     internal_email = f'{spotify_user_id}@spotify.com'
 
-    user, created = User.objects.get_or_create(email=internal_email)
+    user, created = User.objects.get_or_create(
+        email=internal_email,
+        defaults={'username': spotify_username}
+    )
+
     if created:
         user.email = internal_email
         user.save()
@@ -174,3 +179,65 @@ def contact_view(request):
         else:
             context['result'] = 'All fields are required'
     return render(request, "contact.html", context)
+
+
+def wraps_view(request):
+    user_profile = None
+    if hasattr(request.user, 'userprofile'):
+        user_profile = request.user.userprofile
+    else:
+        messages.error(request, "No userprofile attribute")
+    token = user_profile.spotify_access_token
+    headers = {
+        'Authorization': f'Bearer {token}'
+    }
+
+    # Base URL for Spotify's top tracks endpoint
+    base_url = "https://api.spotify.com/v1/me/top/tracks?limit=50"
+
+    # Get short-term top tracks
+    short_term_url = f"{base_url}&time_range=short_term"
+    response_short = requests.get(short_term_url, headers=headers)
+    short_term_tracks = response_short.json()
+
+    # Get medium-term top tracks
+    medium_term_url = f"{base_url}&time_range=medium_term"
+    response_medium = requests.get(medium_term_url, headers=headers)
+    medium_term_tracks = response_medium.json()
+
+    # Get long-term top tracks
+    long_term_url = f"{base_url}&time_range=long_term"
+    response_long = requests.get(long_term_url, headers=headers)
+    long_term_tracks = response_long.json()
+
+    current_time_ms = int(time.time() * 1000)
+
+    # Calculate the 'after' timestamp, which is 5 minutes (300,000 ms) ago
+    five_minutes_ago_ms = current_time_ms - 300000
+
+    # Set up the request URL
+    recently_played_url = f"https://api.spotify.com/v1/me/player/recently-played?limit=50&after={five_minutes_ago_ms}"
+    recent_response = requests.get(recently_played_url, headers=headers)
+    recent_tracks = recent_response.json()
+
+    # Print results or process them as needed
+    print(recent_tracks)
+    print("Short-term Top Tracks:", short_term_tracks)
+    print("Medium-term Top Tracks:", medium_term_tracks)
+    print("Long-term Top Tracks:", long_term_tracks)
+
+    # Assume short_term_tracks is the JSON response containing the list of top tracks
+    top_5_short_term = short_term_tracks.get('items', [])[:5]  # Get the first 5 tracks
+
+    # Format and print the top 5 tracks
+    print("Top 5 Short-term Tracks:")
+    for i, track in enumerate(top_5_short_term, start=1):
+        track_name = track['name']
+        artists = ', '.join(artist['name'] for artist in track['artists'])
+        print(f"{i}. {track_name} by {artists}")
+
+
+    # Display the results or use them as needed
+
+
+    return render(request, 'wraps.html', {'user_profile': user_profile})
