@@ -2,10 +2,15 @@
 Views for handling user authentication, Spotify integration, and app functionality.
 """
 import os
+import pprint
+import secrets
+import string
 import time
 import base64
 import urllib.parse
+from collections import Counter
 from datetime import datetime, timedelta
+from random import random
 
 import requests
 from django.shortcuts import render, redirect
@@ -54,10 +59,22 @@ def logout_view(request):
     Args:
         request (HttpRequest): The request object.
     """
+
+    if 'spotify_access_token' in request.session:
+        token = request.session['spotify_access_token']
+        revoke_url = 'https://accounts.spotify.com/api/revoke'  # adjust URL as needed
+        headers = {
+            'Authorization': f'Bearer {token}',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+        requests.post(revoke_url, headers=headers)
+
     logout(request)
     request.session.flush()
 
-    return redirect('index')
+    response = redirect('index')
+
+    return response
 
 
 def spotify_login(request):
@@ -220,24 +237,35 @@ def wraps_view(request):
     recent_response = requests.get(recently_played_url, headers=headers)
     recent_tracks = recent_response.json()
 
-    # Print results or process them as needed
-    print(recent_tracks)
-    print("Short-term Top Tracks:", short_term_tracks)
-    print("Medium-term Top Tracks:", medium_term_tracks)
-    print("Long-term Top Tracks:", long_term_tracks)
+    # Extract artist IDs from long-term top tracks
+    artist_ids = set(
+        artist['id']
+        for track in long_term_tracks.get('items', [])
+        for artist in track['artists']
+    )
 
-    # Assume short_term_tracks is the JSON response containing the list of top tracks
-    top_5_short_term = short_term_tracks.get('items', [])[:5]  # Get the first 5 tracks
+    # Retrieve genres for each artist
+    artist_genres = []
+    for artist_id in artist_ids:
+        artist_url = f"https://api.spotify.com/v1/artists/{artist_id}"
+        response_artist = requests.get(artist_url, headers=headers)
+        artist_data = response_artist.json()
+        artist_genres.extend(artist_data.get('genres', []))
 
-    # Format and print the top 5 tracks
-    print("Top 5 Short-term Tracks:")
-    for i, track in enumerate(top_5_short_term, start=1):
-        track_name = track['name']
-        artists = ', '.join(artist['name'] for artist in track['artists'])
-        print(f"{i}. {track_name} by {artists}")
+    # Count the most frequent genres
+    genre_counts = Counter(artist_genres)
+    top_genres = [genre[0] for genre in genre_counts.most_common(5)]
 
+    # Prepare top 5 recent tracks for display
+    recent_top_five = [
+        {
+            'name': track['name'],
+            'artist': track['artists'][0]['name']
+        }
+        for track in short_term_tracks.get('items', [])[:5]
+    ]
 
-    # Display the results or use them as needed
-
-
-    return render(request, 'wraps.html', {'user_profile': user_profile, 'wraps': short_term_tracks})
+    return render(request, 'wraps.html', {
+        'top_five': recent_top_five,
+        'top_genres': top_genres
+    })

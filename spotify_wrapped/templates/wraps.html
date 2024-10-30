@@ -3,8 +3,22 @@
 {% block title %}Wraps{% endblock %}
 
 {% block content %}
-<h2>Your Wraps</h2>
-<p>Welcome, {{ user_profile.spotify_username }}!</p>
-<p> {{ wraps }}</p>
-<a href="{% url 'logout' %}">Logout</a>
+
+<h2>Top 5 Recent Songs</h2>
+
+<ol>
+    {% for track in top_five %}
+        <li>"{{ track.name }}", by {{ track.artist }}</li>
+    {% endfor %}
+</ol>
+
+<h2>Top 5 Long-term Genres</h2>
+
+<ol>
+    {% for genre in top_genres %}
+        <li>{{ genre }}</li>
+    {% endfor %}
+</ol>
+
 {% endblock %}
+
