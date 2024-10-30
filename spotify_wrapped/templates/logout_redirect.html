@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p>You are being redirected to Spotify log out page...</p>
+
+<script type="text/javascript">
+    window.open("https://accounts.spotify.com/login", "_blank", "width=500,height=600");
+setTimeout(function() {
+    window.location.href = "{% url 'index' %}";
+}, 5000);
+</script>
+
+{% endblock %}

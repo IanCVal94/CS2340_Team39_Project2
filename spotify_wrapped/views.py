@@ -47,9 +47,6 @@ def login_view(request):
         request (HttpRequest): The request object containing the login form data.
     """
     return spotify_login(request)
-    # if request.method == 'POST':
-    #     return redirect('spotify_login')
-    # return render(request, 'login.html')
 
 
 def logout_view(request):
@@ -59,23 +56,17 @@ def logout_view(request):
     Args:
         request (HttpRequest): The request object.
     """
-
+    # Clear Spotify session tokens
     if 'spotify_access_token' in request.session:
-        token = request.session['spotify_access_token']
-        revoke_url = 'https://accounts.spotify.com/api/revoke'  # adjust URL as needed
-        headers = {
-            'Authorization': f'Bearer {token}',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-        requests.post(revoke_url, headers=headers)
+        del request.session['spotify_access_token']
+    if 'spotify_refresh_token' in request.session:
+        del request.session['spotify_refresh_token']
 
+    # Log the user out locally
     logout(request)
     request.session.flush()
 
-    response = redirect('index')
-
-    return response
-
+    return render(request, 'logout_redirect.html')
 
 def spotify_login(request):
     """
