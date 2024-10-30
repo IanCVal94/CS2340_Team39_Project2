@@ -240,4 +240,4 @@ def wraps_view(request):
     # Display the results or use them as needed
 
 
-    return render(request, 'wraps.html', {'user_profile': user_profile})
+    return render(request, 'wraps.html', {'user_profile': user_profile, 'wraps': short_term_tracks})
