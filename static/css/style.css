@@ -1,0 +1,104 @@
+nav {
+    background-color: black;
+    color: #fff;
+    opacity: 0.64;
+    padding: 15px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+/* Link styling within navbar */
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+nav a:hover {
+    color: #1db954;
+}
+
+/* Main content styling */
+.content {
+    margin-top: 60px;
+}
+
+h2 {
+    color: white;
+}
+
+.meet-team-button {
+    position: fixed;
+    bottom: 3%;
+    left: 4%;
+    width: 10%;
+    height: 10%;
+    background-image: url("../img/footer-icon.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.index-text-box {
+    padding: 15px; /* Optional padding */
+    background-color: transparent; /* Optional background color */
+    white-space: normal; /* Ensures text wraps within the box */
+    word-wrap: break-word; /* Breaks long words if needed */
+    color: #FFF;
+    font-family: Inter;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.index-outer-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+}
+
+.index-left-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 40%;
+}
+
+.index-sign-in {
+    border-radius: 200px;
+    width: 70%;
+    height: 80px;
+    background: #E40055;
+    color: #FFF;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.index-sign-in:hover {
+    background: #FF1A72;
+}
+
+.pumpk-img {
+    width: 30%;
+    height: auto;
+}

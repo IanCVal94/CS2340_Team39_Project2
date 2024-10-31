@@ -132,9 +132,9 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # If you plan to store static files manually in the app
-# STATICFILES_DIRS = [
-    # This is where you can store custom static files
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
 
 
 # Default primary key field type
