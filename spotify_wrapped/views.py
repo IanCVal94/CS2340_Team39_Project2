@@ -26,6 +26,10 @@ from .models import UserProfile
 from .utils import refresh_spotify_token
 from .utils import get_spotify_auth_headers
 
+from django.http import JsonResponse
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+import requests
 
 # Spotify OAuth Constants
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'
@@ -188,7 +192,6 @@ def contact_view(request):
             context['result'] = 'All fields are required'
     return render(request, "contact.html", context)
 
-
 def wraps_view(request):
     user_profile = None
     if hasattr(request.user, 'userprofile'):
@@ -259,4 +262,71 @@ def wraps_view(request):
     return render(request, 'wraps.html', {
         'top_five': recent_top_five,
         'top_genres': top_genres
+    })
+
+def holiday_wrapped_view(request):
+    """
+    Generates a holiday-themed Spotify Wrapped based on the most recent Halloween and Christmas.
+    """
+    # Determine the latest Halloween and Christmas dates
+    today = timezone.now().date()
+    year = today.year
+
+    # Adjust year if Halloween/Christmas hasn't occurred yet this year
+    latest_halloween = datetime(year, 10, 31).date()
+    latest_christmas = datetime(year, 12, 25).date()
+
+    if today < latest_halloween:
+        latest_halloween = datetime(year - 1, 10, 31).date()
+    if today < latest_christmas:
+        latest_christmas = datetime(year - 1, 12, 25).date()
+
+    # Get the user's top tracks and genres
+    user_profile = request.user.userprofile
+    token = user_profile.spotify_access_token
+    headers = {'Authorization': f'Bearer {token}'}
+
+    # Fetch top tracks and genres for each holiday
+    def fetch_wrapped_data():
+        top_tracks_url = "https://api.spotify.com/v1/me/top/tracks?limit=5"
+        response = requests.get(top_tracks_url, headers=headers)
+        top_tracks = response.json()
+
+        track_list = [
+            {'name': track['name'], 'artist': track['artists'][0]['name']}
+            for track in top_tracks.get('items', [])
+        ]
+
+        top_genres_url = "https://api.spotify.com/v1/me/top/artists?limit=5"
+        response_genres = requests.get(top_genres_url, headers=headers)
+        top_artists = response_genres.json()
+
+        genre_list = []
+        for artist in top_artists.get('items', []):
+            genre_list.extend(artist['genres'])
+        top_genres = list(set(genre_list))[:5]  # Unique top 5 genres
+
+        return track_list, top_genres
+
+    # Get wrapped data for Halloween and Christmas
+    halloween_tracks, halloween_genres = fetch_wrapped_data()
+    christmas_tracks, christmas_genres = fetch_wrapped_data()
+
+    # Prepare response data
+    wrapped_data = {
+        'Halloween': {
+            'date': latest_halloween,
+            'top_tracks': halloween_tracks,
+            'top_genres': halloween_genres,
+        },
+        'Christmas': {
+            'date': latest_christmas,
+            'top_tracks': christmas_tracks,
+            'top_genres': christmas_genres,
+        }
+    }
+
+    return JsonResponse({
+        'status': 'Holiday Wrapped generated successfully!',
+        'wrapped_data': wrapped_data
     })

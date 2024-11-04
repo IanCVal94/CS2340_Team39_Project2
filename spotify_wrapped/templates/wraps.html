@@ -3,9 +3,7 @@
 {% block title %}Wraps{% endblock %}
 
 {% block content %}
-
 <h2>Top 5 Recent Songs</h2>
-
 <ol>
     {% for track in top_five %}
         <li>"{{ track.name }}", by {{ track.artist }}</li>
@@ -13,12 +11,51 @@
 </ol>
 
 <h2>Top 5 Long-term Genres</h2>
-
 <ol>
     {% for genre in top_genres %}
         <li>{{ genre }}</li>
     {% endfor %}
 </ol>
 
-{% endblock %}
+<h2>Holiday Wrapped</h2>
+<button id="holiday-wrapped-button">Generate Holiday Wrapped</button>
+<div id="holiday-wrapped-result"></div>
 
+<script>
+document.getElementById('holiday-wrapped-button').addEventListener('click', function() {
+    fetch('/holiday_wrapped/')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status.includes('successfully')) {
+                const halloween = data.wrapped_data.Halloween;
+                const christmas = data.wrapped_data.Christmas;
+
+                document.getElementById('holiday-wrapped-result').innerHTML = `
+                    <h3>Halloween Wrapped (${halloween.date})</h3>
+                    <h4>Top 5 Tracks:</h4>
+                    <ol>
+                        ${halloween.top_tracks.map(track => `<li>"${track.name}", by ${track.artist}</li>`).join('')}
+                    </ol>
+                    <h4>Top 5 Genres:</h4>
+                    <ol>
+                        ${halloween.top_genres.map(genre => `<li>${genre}</li>`).join('')}
+                    </ol>
+
+                    <h3>Christmas Wrapped (${christmas.date})</h3>
+                    <h4>Top 5 Tracks:</h4>
+                    <ol>
+                        ${christmas.top_tracks.map(track => `<li>"${track.name}", by ${track.artist}</li>`).join('')}
+                    </ol>
+                    <h4>Top 5 Genres:</h4>
+                    <ol>
+                        ${christmas.top_genres.map(genre => `<li>${genre}</li>`).join('')}
+                    </ol>
+                `;
+            } else {
+                alert(data.status);
+            }
+        })
+        .catch(error => alert('Error generating holiday wrapped: ' + error));
+});
+</script>
+{% endblock %}
