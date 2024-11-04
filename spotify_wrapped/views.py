@@ -264,6 +264,7 @@ def wraps_view(request):
         'top_genres': top_genres
     })
 
+@login_required
 def holiday_wrapped_view(request):
     """
     Generates a holiday-themed Spotify Wrapped based on the most recent Halloween and Christmas.
@@ -281,14 +282,13 @@ def holiday_wrapped_view(request):
     if today < latest_christmas:
         latest_christmas = datetime(year - 1, 12, 25).date()
 
-    # Get the user's top tracks and genres
     user_profile = request.user.userprofile
     token = user_profile.spotify_access_token
     headers = {'Authorization': f'Bearer {token}'}
 
-    # Fetch top tracks and genres for each holiday
-    def fetch_wrapped_data():
-        top_tracks_url = "https://api.spotify.com/v1/me/top/tracks?limit=5"
+    # Fetch top tracks and genres with different time ranges
+    def fetch_wrapped_data(time_range):
+        top_tracks_url = f"https://api.spotify.com/v1/me/top/tracks?limit=5&time_range={time_range}"
         response = requests.get(top_tracks_url, headers=headers)
         top_tracks = response.json()
 
@@ -297,7 +297,7 @@ def holiday_wrapped_view(request):
             for track in top_tracks.get('items', [])
         ]
 
-        top_genres_url = "https://api.spotify.com/v1/me/top/artists?limit=5"
+        top_genres_url = f"https://api.spotify.com/v1/me/top/artists?limit=5&time_range={time_range}"
         response_genres = requests.get(top_genres_url, headers=headers)
         top_artists = response_genres.json()
 
@@ -308,9 +308,9 @@ def holiday_wrapped_view(request):
 
         return track_list, top_genres
 
-    # Get wrapped data for Halloween and Christmas
-    halloween_tracks, halloween_genres = fetch_wrapped_data()
-    christmas_tracks, christmas_genres = fetch_wrapped_data()
+    # Get wrapped data for Halloween (short-term) and Christmas (long-term)
+    halloween_tracks, halloween_genres = fetch_wrapped_data("short_term")
+    christmas_tracks, christmas_genres = fetch_wrapped_data("long_term")
 
     # Prepare response data
     wrapped_data = {
