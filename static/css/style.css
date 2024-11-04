@@ -102,3 +102,11 @@ h2 {
     width: 30%;
     height: auto;
 }
+
+.settings-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+    text-align: center;
+}

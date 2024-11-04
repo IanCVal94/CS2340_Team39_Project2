@@ -188,6 +188,8 @@ def contact_view(request):
             context['result'] = 'All fields are required'
     return render(request, "contact.html", context)
 
+def settings_view(request):
+    return render(request, "settings.html")
 
 def wraps_view(request):
     user_profile = None

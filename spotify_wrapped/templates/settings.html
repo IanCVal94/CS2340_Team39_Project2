@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+    <div class="settings-container">
+        <h2>Settings</h2>
+        <div class="settings-row">
+            <div class="label">Account</div>
+            <button class="button logout">Logout</button>
+            <button class="button delete">Delete</button>
+        </div>
+        <div class="settings-row">
+            <div class="label">Theme</div>
+            <button class="button halloween">Halloween</button>
+            <button class="button dark">Dark</button>
+            <button class="button light">Light</button>
+        </div>
+        <div class="settings-row">
+            <div class="label">Language</div>
+            <button class="button english">English</button>
+            <button class="button azerbaijani">Azerbaijani</button>
+            <button class="button russian">Russian</button>
+        </div>
+    </div>
+{% endblock %}

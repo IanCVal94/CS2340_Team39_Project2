@@ -11,6 +11,7 @@ urlpatterns = [
     path('wraps/', views.wraps_view, name='wraps'),
     path('logout/', views.logout_view, name='logout'),
     path('contact/', views.contact_view, name='contact'),
+    path('settings/', views.settings_view, name='settings'),
     # Spotify OAuth URLs
     path('spotify/login/', views.spotify_login, name='spotify_login'),
     path('spotify/callback/', views.spotify_callback, name='spotify_callback'),
