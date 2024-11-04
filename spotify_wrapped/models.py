@@ -3,6 +3,7 @@ Models for user profiles and Spotify wrapped features.
 """
 from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 
 class UserProfile(models.Model):
@@ -26,3 +27,17 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.spotify_username
+
+
+class SpotifyWraps(models.Model):
+    top_songs = ArrayField(models.TextField(), blank=True, default=list)
+    date_time = models.DateTimeField(auto_now_add=True)
+    length = models.CharField(max_length=255, blank=True, null=True)
+    top_artists = ArrayField(models.TextField(), blank=True, default=list)
+    top_genres = ArrayField(models.TextField(), blank=True, default=list)
+    last_5_tracks = ArrayField(models.TextField(), blank=True, default=list)
+    last_5_artists = ArrayField(models.TextField(), blank=True, default=list)
+    num_distinct_artists = models.SmallIntegerField(blank=True, null=True)
+    num_genres = models.SmallIntegerField(blank=True, null=True)
+
+
