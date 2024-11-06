@@ -54,7 +54,7 @@ h2 {
     white-space: normal; /* Ensures text wraps within the box */
     word-wrap: break-word; /* Breaks long words if needed */
     color: #FFF;
-    font-family: Inter;
+    font-family: Inter, sans-serif;
     font-size: 48px;
     font-style: normal;
     font-weight: 600;
@@ -85,7 +85,7 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Inter;
+    font-family: Inter, sans-serif;
     font-size: 32px;
     font-style: normal;
     font-weight: 600;
@@ -101,4 +101,161 @@ h2 {
 .pumpk-img {
     width: 30%;
     height: auto;
+}
+
+.centered-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h3 {
+    color: #FFF;
+    font-family: Inter, sans-serif;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.team-members {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; 
+    max-width: 160px;
+}
+
+.profile-pic {
+    width: 160px;
+    margin-bottom: -30px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+#team h4 {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: -10px;
+}
+
+p {
+    color: #FFE5D5;
+    font-family: Inter, sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: -20px;
+    margin-bottom: 30px;
+}
+
+.member p {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.feedback-form {
+    border-radius: 29px;
+    opacity: 0.64;
+    background: #000;
+    margin-top: -25px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin: 15px;
+}
+
+/* Styling for the subject input */
+.input-group input[type="text"] {
+    flex: 1;                     /* Fills available space */
+    padding: 12px;
+    border: none;                /* Removes default border */
+    border-radius: 20px;          /* Rounded corners */
+    opacity: 0.64;
+    background: #6A6A6A;
+    color: white;
+
+    font-family: Inter, sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    margin-top: 15px;
+}
+
+/* Styling for the message textarea */
+.input-group textarea {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    resize: none;                /* Disables resizing */
+    height: 100px;               /* Sets height for the textarea */
+
+    opacity: 0.64;
+    background: #6A6A6A;
+
+    font-family: Inter, sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    margin-bottom: 15px;
+}
+
+/* Styling for the Send button */
+.input-group button {
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s; /* Smooth hover transition */
+
+    border-radius: 20px;
+
+    background: #F1B111;
+
+
+    padding: 12px;
+    resize: none;                /* Disables resizing */
+
+    font-family: Inter, sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    margin-top: 15px;
+    margin-left: 15px;
+    width: 120px;
+}
+
+/* Button hover effect */
+.input-group button:hover {
+    background-color: #e6951f;   /* Darkens the button color on hover */
+}
+
+/* Styling for the result message */
+.feedback-form p {
+    color: #ffffff;
+    font-size: 1rem;
 }

@@ -1,45 +1,75 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Contact Us{% endblock %}
 
 {% block content %}
-<h2>Contact the Developers</h2>
 
 <!-- Development Team Section -->
-<section id="team">
-    <h3>Meet the Development Team</h3>
-    <p>We are Team 39 from CS 2340, dedicated to building user-friendly and robust applications. Our team is composed of:</p>
-    <ul>
-        <li>Ian Valderas: Role - Full-Stack Developer and Scrum Master</li>
-        <li>Ilkin Mammadli: Role - Full-Stack Developer and Product Owner</li>
-        <li>Jack English: Role - Frontend Developer</li>
-        <li>Zach Keschner: Role - Backend Developer</li>
-        <li>Oliver Thor: Role - Backend Developer</li>
-    </ul>
-</section>
+<div class="centered-container">
+    <section id="team">
+        <h3>Meet the Development Team</h3>
+        <p>We are Team 39 from CS 2340, dedicated to building user-friendly and robust applications. Our team is composed of:</p>
 
-<!-- Contact Form -->
-<h3>Send Us Your Feedback</h3>
-<div>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="subject">Subject:</label>
-        <input type="text" name="subject" placeholder="Enter your subject" required>
+        <div class="team-members">
+            <div class="member">
+                <img class="profile-pic" src="{% static 'img/profiles/Jack.png' %}" alt="Jack's photo">
+                <h4>Jack English</h4>
+                <p>Frontend Developer</p>
+            </div>
+            <div class="member">
+                <img class="profile-pic" src="{% static 'img/profiles/Zach.png' %}" alt="Zach's photo">
+                <h4>Zach Keschner</h4>
+                <p>Backend Developer</p>
+            </div>
+            <div class="member">
+                <img class="profile-pic" src="{% static 'img/profiles/Ilkin.png' %}" alt="Ilkin's photo">
+                <h4>Ilkin Mammadli</h4>
+                <p>Full-Stack Developer and Product Owner</p>
+            </div>
+            <div class="member">
+                <img class="profile-pic" src="{% static 'img/profiles/Oliver.png' %}" alt="Oliver's photo">
+                <h4>Oliver Thor</h4>
+                <p>Backend Developer</p>
+            </div>
+            <div class="member">
+                <img class="profile-pic" src="{% static 'img/profiles/Ian.png' %}" alt="Ian's photo">
+                <h4>Ian Valderas</h4>
+                <p>Full-Stack Developer and Scrum Master</p>
+            </div>
+        </div>
+    </section>
 
-        <label for="message">Message:</label>
-        <textarea name="message" placeholder="Type your message here" required></textarea>
 
-        <button type="submit">Send Message</button>
-    </form>
-    <p>{{ result }}</p>
+    <!-- Contact Form -->
+    <h3>Send Us Your Feedback</h3>
+    <div class="feedback-form">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <input type="text" name="subject" placeholder="Subject" required>
+                <button type="submit">Send</button>
+            </div>
+
+            <div class="input-group">
+                <textarea name="message" placeholder="Message" required></textarea>
+            </div>
+
+            <p>{{ result }}</p>
+        </form>
+    </div>
+    <!-- Display Success/Error Messages -->
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
-<!-- Display Success/Error Messages -->
-{% if messages %}
-    <ul>
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+
+
+
 
 {% endblock %}
