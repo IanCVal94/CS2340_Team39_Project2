@@ -7,7 +7,7 @@
         <h2>Settings</h2>
         <div class="settings-row">
             <div class="label">Account</div>
-            <button class="button logout">Logout</button>
+            <button class="button logout" onclick="window.location.href={% url 'logout' %}">Logout</button>
             <button class="button delete">Delete</button>
         </div>
         <div class="settings-row">
@@ -23,4 +23,6 @@
             <button class="button russian">Russian</button>
         </div>
     </div>
+
+    <a href="{% url 'contact' %}" class="meet-team-button"></a>
 {% endblock %}

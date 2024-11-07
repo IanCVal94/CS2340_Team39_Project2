@@ -1,7 +1,6 @@
 nav {
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.64);
     color: #fff;
-    opacity: 0.64;
     padding: 15px;
     display: flex;
     justify-content: space-around;
@@ -54,7 +53,7 @@ h2 {
     white-space: normal; /* Ensures text wraps within the box */
     word-wrap: break-word; /* Breaks long words if needed */
     color: #FFF;
-    font-family: Inter;
+    font-family: Inter, sans-serif;
     font-size: 48px;
     font-style: normal;
     font-weight: 600;
@@ -103,10 +102,257 @@ h2 {
     height: auto;
 }
 
-.settings-container {
+.centered-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h3 {
+    color: #FFF;
+    font-family: Inter, sans-serif;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.team-members {
     display: flex;
     justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.member {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    height: 85vh;
     text-align: center;
+    max-width: 160px;
+}
+
+.profile-pic {
+    width: 160px;
+    margin-bottom: -30px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+#team h4 {
+    color: #FFF;
+    text-align: center;
+    font-family: Inter, sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: -10px;
+}
+
+p {
+    color: #FFE5D5;
+    font-family: Inter, sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-top: -20px;
+    margin-bottom: 30px;
+}
+
+.member p {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.feedback-form {
+    border-radius: 29px;
+    background: rgba(0, 0, 0, 0.64);
+    margin-top: -25px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    margin: 15px;
+}
+
+/* Styling for the subject input */
+.input-group input[type="text"] {
+    flex: 1;                     /* Fills available space */
+    padding: 12px;
+    border: none;                /* Removes default border */
+    border-radius: 20px;          /* Rounded corners */
+    opacity: 0.64;
+    background: #6A6A6A;
+    color: white;
+
+    font-family: Inter, sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    margin-top: 15px;
+}
+
+/* Styling for the message textarea */
+.input-group textarea {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    resize: none;                /* Disables resizing */
+    height: 100px;               /* Sets height for the textarea */
+
+    opacity: 0.64;
+    background: #6A6A6A;
+
+    font-family: Inter, sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    margin-bottom: 15px;
+}
+
+.input-group textarea::placeholder {
+  color: rgba(255, 255, 255, 1);
+}
+
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 1);
+}
+
+/* Styling for the Send button */
+.input-group button {
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s; /* Smooth hover transition */
+
+    border-radius: 20px;
+
+    background: #F1B111;
+
+
+    padding: 12px;
+    resize: none;                /* Disables resizing */
+
+    font-family: Inter, sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+
+    margin-top: 15px;
+    margin-left: 15px;
+    width: 120px;
+}
+
+/* Button hover effect */
+.input-group button:hover {
+    background-color: #e6951f;   /* Darkens the button color on hover */
+}
+
+/* Styling for the result message */
+.feedback-form p {
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+.settings-container {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Inter, sans-serif;
+}
+
+.settings-container h2 {
+    text-align: left;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.settings-row {
+    display: flex;
+    height: 70px;
+    align-items: center;
+    margin-bottom: 11px;
+    background-color: rgba(0, 0, 0, 0.64);
+    border-radius: 16px;
+}
+
+.label {
+    flex: 1;
+    margin-left: 15px;
+    max-width: 120px;
+    color: #FFF;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-align: left;
+}
+
+.settings-row .button {
+    flex: 1;
+    opacity: 1.0;
+    padding: 13px 15px;
+    margin-left: 15px;
+    border: none;
+    border-radius: 14px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.settings-row button:hover {
+    opacity: 0.8;
+}
+
+.logout {
+    background-color: #F1B111;
+}
+
+.delete {
+    background-color: #FF1A72;
+    margin-right: 15px;
+}
+
+.halloween {
+    background-color: #E84000;
+}
+
+.dark {
+    background-color: #EB6123;
+}
+
+.light {
+    background-color: #F1B111;
+    margin-right: 15px;
+}
+
+.english {
+    background-color: #E84000;
+}
+
+.azerbaijani {
+    background-color: #EB6123;
+}
+
+.russian {
+    background-color: #F1B111;
+    margin-right: 15px;
 }
