@@ -166,6 +166,7 @@ def profile_view(request):
     return render(request, 'profile.html', {'user_profile': user_profile})
 
 
+
 def contact_view(request):
     """
     Handles the contact form and sends an email.

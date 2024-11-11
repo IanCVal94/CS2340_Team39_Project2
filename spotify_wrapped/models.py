@@ -17,7 +17,7 @@ class UserProfile(models.Model):
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     favorite_genres = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    mode = models.CharField(max_length=255, blank=True, null=True)
     # Spotify related fields
     spotify_username = models.CharField(max_length=255, blank=True, null=True)
     spotify_user_id = models.CharField(max_length=255, blank=True, null=True)
@@ -30,6 +30,7 @@ class UserProfile(models.Model):
 
 
 class SpotifyWraps(models.Model):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='saved_wraps')
     top_songs = ArrayField(models.TextField(), blank=True, default=list)
     date_time = models.DateTimeField(auto_now_add=True)
     length = models.CharField(max_length=255, blank=True, null=True)
