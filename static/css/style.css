@@ -344,6 +344,7 @@ p {
     font-size: 16px;
     font-weight: 600;
     transition: background 0.3s;
+    margin-top: -30px;
 }
 
 .manage-wrap-row {
