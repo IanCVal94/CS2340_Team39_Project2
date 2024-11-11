@@ -384,6 +384,10 @@ p {
     opacity: 0.8;
 }
 
+.manage-wrap-row button:hover {
+    opacity: 0.8;
+}
+
 .logout {
     background-color: #F1B111;
 }
