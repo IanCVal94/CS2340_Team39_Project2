@@ -3,22 +3,43 @@
 {% block title %}Wraps{% endblock %}
 
 {% block content %}
+    <div class="settings-container">
+        <h2>Create an Autumn Anthem</h2>
+        <div class="create-wrap-row">
+            <button class="button halloween">Past 1 Month</button>
+            <button class="button dark">Past 1 Year</button>
+            <button class="button light">Past 5 Years</button>
+        </div>
+        <h2>My Autumn Anthems</h2>
+        <div class="manage-wrap-row">
+            <div class="label">Past 3 Months - Created Oct  30th, 1:32pm</div>
+            <button class="button logout">View</button>
+            <button class="button delete">Delete</button>
+        </div>
 
-<h2>Top 5 Recent Songs</h2>
-
-<ol>
-    {% for track in top_five %}
-        <li>"{{ track.name }}", by {{ track.artist }}</li>
-    {% endfor %}
-</ol>
-
-<h2>Top 5 Long-term Genres</h2>
-
-<ol>
-    {% for genre in top_genres %}
-        <li>{{ genre }}</li>
-    {% endfor %}
-</ol>
-
+    <a href="{% url 'contact' %}" class="meet-team-button"></a>
 {% endblock %}
+
+
+{#{% block title %}Wraps{% endblock %}#}
+{##}
+{#{% block content %}#}
+{##}
+{#<h2>Top 5 Recent Songs</h2>#}
+{##}
+{#<ol>#}
+{#    {% for track in top_five %}#}
+{#        <li>"{{ track.name }}", by {{ track.artist }}</li>#}
+{#    {% endfor %}#}
+{#</ol>#}
+{##}
+{#<h2>Top 5 Long-term Genres</h2>#}
+{##}
+{#<ol>#}
+{#    {% for genre in top_genres %}#}
+{#        <li>{{ genre }}</li>#}
+{#    {% endfor %}#}
+{#</ol>#}
+{##}
+{#{% endblock %}#}
 
