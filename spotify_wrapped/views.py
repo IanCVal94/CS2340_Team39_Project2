@@ -190,9 +190,16 @@ def contact_view(request):
     return render(request, "contact.html", context)
 
 def settings_view(request):
+    """
+    Displays the user's profile settings
+    """
     return render(request, "settings.html")
 
 def wraps_view(request):
+    """
+    Collects all the necessary wrap information and renders the wraps
+    presentation and saved the information to an instance of the SpotifyWraps model
+    """
     user_profile = None
     if hasattr(request.user, 'userprofile'):
         user_profile = request.user.userprofile

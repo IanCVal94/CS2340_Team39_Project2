@@ -30,6 +30,10 @@ class UserProfile(models.Model):
 
 
 class SpotifyWraps(models.Model):
+    """
+    Model to store individual spotify wrapped information for a single wrap
+    Each wrap has a top songs, top artists, and top genres that would all be present for the designated wrap
+    """
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='saved_wraps')
     top_songs = ArrayField(models.TextField(), blank=True, default=list)
     date_time = models.DateTimeField(auto_now_add=True)
