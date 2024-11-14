@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load static %}
-
 {% block title %}Contact Us{% endblock %}
 
 {% block content %}
@@ -8,7 +8,7 @@
 <!-- Development Team Section -->
 <div class="centered-container">
     <section id="team">
-        <h3>Meet the Development Team</h3>
+        <h3>{% trans "Meet the Development Team"%}</h3>
         <p>We are Team 39 from CS 2340, dedicated to building user-friendly and robust applications. Our team is composed of:</p>
 
         <div class="team-members">

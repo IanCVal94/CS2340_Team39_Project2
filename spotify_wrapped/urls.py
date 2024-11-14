@@ -2,6 +2,7 @@
 URL configuration for handling app views and Spotify OAuth routes.
 """
 from django.urls import path
+from django.conf.urls.i18n import set_language
 from . import views
 
 urlpatterns = [
@@ -23,4 +24,6 @@ urlpatterns = [
     # Spotify OAuth URLs
     path('spotify/login/', views.spotify_login, name='spotify_login'),
     path('spotify/callback/', views.spotify_callback, name='spotify_callback'),
+    path('set_language/', set_language, name='set_language'),
+
 ]

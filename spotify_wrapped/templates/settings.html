@@ -1,27 +1,31 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}Settings{% endblock %}
 
 {% block content %}
     <div class="settings-container">
-        <h2>Settings</h2>
+        <h2>{% trans "Settings" %}</h2>
         <div class="settings-row">
-            <div class="label">Account</div>
-            <button class="button logout" onclick="window.location.href={% url 'logout' %}">Logout</button>
-            <button class="button delete">Delete</button>
+            <div class="label">{% trans "Account" %}</div>
+            <button class="button logout" onclick="window.location.href={% url 'logout' %}">{% trans "Logout" %}</button>
+            <button class="button delete">{% trans "Delete" %}</button>
         </div>
         <div class="settings-row">
             <div class="label">Theme</div>
-            <button class="button halloween">Halloween</button>
-            <button class="button dark">Dark</button>
-            <button class="button light">Light</button>
+            <button class="button halloween">{% trans "Halloween" %}</button>
+            <button class="button dark">{% trans "Dark" %}</button>
+            <button class="button light">{% trans "Light" %}</button>
         </div>
+        <form action="{% url 'set_language' %}" method="post">
         <div class="settings-row">
             <div class="label">Language</div>
-            <button class="button english">English</button>
-            <button class="button azerbaijani">Azerbaijani</button>
-            <button class="button russian">Russian</button>
+                {% csrf_token %}
+                <button type="submit" name="language" value="en" class="button english">{% trans "English" %}</button>
+                <button type="submit" name="language" value="az" class="button azerbaijani">{% trans "Azerbaijani" %}</button>
+                <button type="submit" name="language" value="ru" class="button russian">{% trans "Russian" %}</button>
         </div>
+        </form>
     </div>
 
     <a href="{% url 'contact' %}" class="meet-team-button"></a>
