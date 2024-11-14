@@ -39,6 +39,12 @@ def index(request):
     """
     return render(request, 'index.html')
 
+def wrap_base(request):
+    """
+    Renders the wrap_base page.
+    """
+    return render(request, 'wrap_base.html')
+
 def login_view(request):
     """
     Handles user login and authentication.
