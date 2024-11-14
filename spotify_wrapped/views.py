@@ -45,6 +45,48 @@ def wrap_base(request):
     """
     return render(request, 'wrap_base.html')
 
+def wrap1(request):
+    """
+    Renders the wrap 1 page.
+    """
+    return render(request, 'wrap1.html')
+
+def wrap2(request):
+    """
+    Renders the wrap 2 page.
+    """
+    return render(request, 'wrap2.html')
+
+def wrap3(request):
+    """
+    Renders the wrap 3 page.
+    """
+    return render(request, 'wrap3.html')
+
+def wrap4(request):
+    """
+    Renders the wrap 4 page.
+    """
+    return render(request, 'wrap4.html')
+
+def wrap5(request):
+    """
+    Renders the wrap 5 page.
+    """
+    return render(request, 'wrap5.html')
+
+def wrap6(request):
+    """
+    Renders the wrap 6 page.
+    """
+    return render(request, 'wrap6.html')
+
+def wrap7(request):
+    """
+    Renders the wrap 7 page.
+    """
+    return render(request, 'wrap7.html')
+
 def login_view(request):
     """
     Handles user login and authentication.

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'wrap_base.html' %}
 {% load static %}
 
 {% block title %}Home{% endblock %}
@@ -8,13 +8,19 @@
     <div>
         <div class="index-outer-box">
             <div class="index-left-box">
-                <div class="index-text-box">You’re about to discover your music taste for the past {3 months}, {Jack}</div>
+                <div class="index-text-box">Here are your top 5 genres: <br>
+                    1. genre <br>
+                    2. genre <br>
+                    3. genre <br>
+                    4. genre <br>
+                    5. genre
+                </div>
 
             </div>
-            <img class="wrap-img" src="{% static 'img/wrap-icons/media_output.png' %}" alt="speaker and headphones image">
+            <img class="wrap-img" src="{% static 'img/wrap-icons/radio.png' %}" alt="radio image">
         </div>
         <div class="wrap-next-container">
-            <a class="wrap-next" href="{% url 'wrap1' %}">Next</a>
+            <a class="wrap-next" href="{% url 'wrap7' %}">Next</a>
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
         </div>
     </div>

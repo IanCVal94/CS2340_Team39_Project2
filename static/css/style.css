@@ -58,6 +58,7 @@ h2 {
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    width: 80%;
 }
 
 .index-outer-box {
@@ -113,11 +114,35 @@ h2 {
     text-decoration: none;
 }
 
+.wrap-next-final {
+    border-radius: 200px;
+    width: 290px;
+    height: 80px;
+    background: #E40055;
+    color: #FFF;
+    text-align: left;
+    display: flex;
+    justify-content: left;
+    padding-left: 30px;
+    align-items: center;
+    font-family: Inter, sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 .index-sign-in:hover {
     background: #FF1A72;
 }
 
 .wrap-next:hover {
+    background: #FF1A72;
+}
+
+.wrap-next-final:hover {
     background: #FF1A72;
 }
 
