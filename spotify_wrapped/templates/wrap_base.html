@@ -5,17 +5,20 @@
 
 {% block content %}
 
-    <div class="index-outer-box">
-        <div class="index-left-box">
-            <div class="index-text-box">Connect your Spotify account this Fall to reveal your spooky taste.</div>
-            {% if user.is_authenticated %}
-                <a class="index-sign-in" href="{% url 'wraps' %}">See My Taste</a>
-            {% else %}
-                <a class="index-sign-in" href="{% url 'login' %}">Sign into Spotify</a>
-            {% endif %}
+    <div>
+        <div class="index-outer-box">
+            <div class="index-left-box">
+                <div class="index-text-box">Blank text box here.</div>
+
+            </div>
+            <img class="wrap-img" src="{% static 'img/wrap-icons/media_output.png' %}" alt="speaker and headphones image">
         </div>
-        <img class="pumpk-img" src="{% static 'img/pumpk.png' %}" alt="pumpkin image">
+        <div class="wrap-next-container">
+            <a class="wrap-next" href="{% url 'wrap_base' %}">Next</a>
+            <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
+        </div>
     </div>
+
 
 <a href="{% url 'contact' %}" class="meet-team-button"></a>
 

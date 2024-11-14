@@ -37,8 +37,8 @@ h2 {
     position: fixed;
     bottom: 3%;
     left: 4%;
-    width: 10%;
-    height: 10%;
+    width: 230px;
+    height: 75px;
     background-image: url("../img/footer-icon.svg");
     background-size: contain;
     background-repeat: no-repeat;
@@ -93,12 +93,57 @@ h2 {
     text-decoration: none;
 }
 
+.wrap-next {
+    border-radius: 200px;
+    width: 150px;
+    height: 80px;
+    background: #E40055;
+    color: #FFF;
+    text-align: left;
+    display: flex;
+    justify-content: left;
+    padding-left: 30px;
+    align-items: center;
+    font-family: Inter, sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 .index-sign-in:hover {
     background: #FF1A72;
 }
 
+.wrap-next:hover {
+    background: #FF1A72;
+}
+
+.wrap-next-container {
+    position: fixed;
+    bottom: 117px;
+    right: 22%;
+    display: flex;
+    align-items: center;
+}
+
 .pumpk-img {
     width: 30%;
+    height: auto;
+}
+
+.arrow_forward_ios {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    margin-left: -60px;
+
+}
+
+.wrap-img {
+    max-width: 300px;
     height: auto;
 }
 
