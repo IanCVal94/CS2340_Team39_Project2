@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+
+import certifi
 from decouple import config
 from django.contrib import staticfiles
 
@@ -21,7 +23,6 @@ DEBUG = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
 # Load environment variables
 from dotenv import load_dotenv
 load_dotenv()
@@ -165,4 +166,7 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'group39cs2340@gmail.com'
 EMAIL_HOST_PASSWORD = 'kgep hzsu zway hdtq'
+# DEFAULT_FROM_EMAIL = 'Spotify Wrapped Project'
+
+# os.environ['SSL_CERT_FILE'] = certifi.where()
 

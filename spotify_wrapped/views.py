@@ -12,6 +12,7 @@ from collections import Counter
 from datetime import datetime, timedelta
 from random import random
 
+import certifi
 import requests
 from django.shortcuts import render, redirect
 from django.conf import settings
@@ -25,6 +26,7 @@ from django.core.mail import send_mail
 from .models import UserProfile
 from .utils import refresh_spotify_token
 from .utils import get_spotify_auth_headers
+import ssl
 
 
 # Spotify OAuth Constants
@@ -32,6 +34,9 @@ SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'
 SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token'
 SPOTIFY_API_BASE_URL = 'https://api.spotify.com/v1'
 SPOTIFY_SCOPE = 'user-top-read user-read-recently-played'
+
+session = requests.Session()
+session.verify = False
 
 def index(request):
     """
@@ -90,9 +95,6 @@ def wrap7(request):
 def login_view(request):
     """
     Handles user login and authentication.
-
-    Args:
-        request (HttpRequest): The request object containing the login form data.
     """
     return spotify_login(request)
 
@@ -100,9 +102,6 @@ def login_view(request):
 def logout_view(request):
     """
     Logs the user out and clears the session.
-
-    Args:
-        request (HttpRequest): The request object.
     """
     # Clear Spotify session tokens
     if 'spotify_access_token' in request.session:
