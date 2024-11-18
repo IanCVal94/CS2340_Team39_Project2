@@ -35,7 +35,7 @@ SPOTIFY_REDIRECT_URI='http://localhost:8000/spotify/callback/'
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'spotify2340group39wrapped-5837b7a20855.herokuapp.com'
+    'cs2340-group39-spotifywrapped-487f1de3fd57.herokuapp.com'
 ]
 
 
