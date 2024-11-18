@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 
 import certifi
+import django_heroku
 from decouple import config
 from django.contrib import staticfiles
 
@@ -91,13 +92,23 @@ WSGI_APPLICATION = 'CS2340_Team39_Project2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd92te5m8mkvnap',
+        'USER': 'u9apbkarf0h4hn',
+        'PASSWORD': 'p99571c58e4571cdef23e891d0acc572b315ffa184fd0e921e3559b6737bf6673',
+        'HOST': 'c97r84s7psuajm.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -140,10 +151,10 @@ LANGUAGES = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-
 # Add this line to define the directory where static files will be collected
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = 'static/'
+django_heroku.settings(locals())
 
 # If you plan to store static files manually in the app
 STATICFILES_DIRS = [
