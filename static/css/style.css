@@ -3,7 +3,7 @@ nav {
     color: #fff;
     padding: 15px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     position: fixed;
@@ -19,6 +19,8 @@ nav .title {
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 /* Link styling within navbar */

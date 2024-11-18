@@ -18,21 +18,39 @@
             background-position: center;
             background-size: 130%;
         }
+
+        .username {
+            color: #FFF;
+            text-align: right;
+            font-family: Inter, sans-serif;
+            font-size: 17.5px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            margin-right: 10px; /* Space between username and logo */
+        }
+
+        .name-container {
+            display: flex;
+            align-items: center; /* Center user info vertically */
+        }
+
+        .spotify-logo {
+            width: 32px; /* Adjust logo size */
+            height: auto;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
-    <nav>
+    <nav class="navbar">
         <a class="title" href="{% url 'index' %}">{% trans "Your Autumn Anthem" %}</a>
         {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}">{% trans "Profile" %}</a>
-            <a href="{% url 'logout' %}">{% trans "Logout" %}</a>
-            <a href="{% url 'wraps_view' %}">{% trans "Wraps" %}</a>
-            <a href="{% url 'wrap_base' %}">{% trans "Wrap base" %}</a>
-            <a href="{% url 'settings' %}">{% trans "Settings" %}</a>
-        {% else %}
-            <a href="{% url 'login' %}">{% trans "Login" %}</a>
+            <div class="name-container">
+                <a class="username" href="{% url 'settings' %}">{{ spotify_username }}</a>
+                <img class="spotify-logo" src="{% static 'img/spotify_logo.png' %}" alt="spotify logo">
+            </div>
         {% endif %}
-        <a href="{% url 'contact' %}">{% trans "Contact The Team" %}</a>
     </nav>
 
     <div class="content">

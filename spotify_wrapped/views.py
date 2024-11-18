@@ -54,7 +54,11 @@ def index(request):
     Returns:
         HttpResponse: Rendered homepage.
     """
-    return render(request, 'index.html')
+
+    context = None
+    if request.user.is_authenticated:
+        context = {'spotify_username': request.user.userprofile.spotify_username}
+    return render(request, 'index.html', context)
 
 def wrap_base(request):
     """
@@ -66,7 +70,7 @@ def wrap_base(request):
     Returns:
         HttpResponse: Rendered wrap_base page.
     """
-    return render(request, 'wrap_base.html')
+    return render(request, 'wrap_base.html', {'spotify_username': request.user.userprofile.spotify_username})
 
 def wrap1(request):
     """
@@ -78,7 +82,7 @@ def wrap1(request):
     Returns:
         HttpResponse: Rendered wrap1 page.
     """
-    return render(request, 'wrap1.html')
+    return render(request, 'wrap1.html', {'spotify_username': request.user.userprofile.spotify_username})
 
 def wrap2(request):
     """
@@ -90,7 +94,7 @@ def wrap2(request):
     Returns:
         HttpResponse: Rendered wrap2 page.
     """
-    return render(request, 'wrap2.html')
+    return render(request, 'wrap2.html', {'spotify_username': request.user.userprofile.spotify_username})
 
 def wrap3(request):
     """
@@ -102,7 +106,7 @@ def wrap3(request):
     Returns:
         HttpResponse: Rendered wrap3 page.
     """
-    return render(request, 'wrap3.html')
+    return render(request, 'wrap3.html', {'spotify_username': request.user.userprofile.spotify_username})
 
 def wrap4(request):
     """
@@ -114,7 +118,7 @@ def wrap4(request):
     Returns:
         HttpResponse: Rendered wrap4 page.
     """
-    return render(request, 'wrap4.html')
+    return render(request, 'wrap4.html', {'spotify_username': request.user.userprofile.spotify_username})
 
 def wrap5(request):
     """
@@ -126,7 +130,7 @@ def wrap5(request):
     Returns:
         HttpResponse: Rendered wrap5 page.
     """
-    return render(request, 'wrap5.html')
+    return render(request, 'wrap5.html', {'spotify_username': request.user.userprofile.spotify_username})
 
 def wrap6(request):
     """
@@ -138,7 +142,7 @@ def wrap6(request):
     Returns:
         HttpResponse: Rendered wrap6 page.
     """
-    return render(request, 'wrap6.html')
+    return render(request, 'wrap6.html', {'spotify_username': request.user.userprofile.spotify_username})
 
 def wrap7(request):
     """
@@ -150,7 +154,7 @@ def wrap7(request):
     Returns:
         HttpResponse: Rendered wrap7 page.
     """
-    return render(request, 'wrap7.html')
+    return render(request, 'wrap7.html', {'spotify_username': request.user.userprofile.spotify_username})
 
 def login_view(request):
     """
@@ -279,29 +283,29 @@ def spotify_callback(request):
 
     messages.success(request, f"Logged in as {spotify_username}")
 
-    return redirect('profile')
+    return redirect('index')
 
 
-@login_required
-def profile_view(request):
-    """
-    Displays the logged-in user's profile, including past Spotify wraps.
-
-    Args:
-        request (HttpRequest): The request object.
-
-    Returns:
-        HttpResponse: Rendered profile page with user profile data.
-    """
-    print(request.user)
-    user_profile = None
-    if hasattr(request.user, 'userprofile'):
-        user_profile = request.user.userprofile
-    else:
-        messages.error(request, "No userprofile attribute")
-
-    return render(request, 'profile.html', {'user_profile': user_profile})
-
+# @login_required
+# def profile_view(request):
+#     """
+#     Displays the logged-in user's profile, including past Spotify wraps.
+#
+#     Args:
+#         request (HttpRequest): The request object.
+#
+#     Returns:
+#         HttpResponse: Rendered profile page with user profile data.
+#     """
+#     print(request.user)
+#     user_profile = None
+#     if hasattr(request.user, 'userprofile'):
+#         user_profile = request.user.userprofile
+#     else:
+#         messages.error(request, "No userprofile attribute")
+#
+#     return render(request, 'profile.html', {'user_profile': user_profile, 'spotify_username': request.user.userprofile.spotify_username})
+#
 
 
 def contact_view(request):
@@ -314,7 +318,9 @@ def contact_view(request):
     Returns:
         HttpResponse: Rendered contact page with success or error message.
     """
-    context = {}
+    context = None
+    if request.user.is_authenticated:
+        context = {'spotify_username': request.user.userprofile.spotify_username}
     if request.method == 'POST':
         subject = request.POST.get('subject')
         message = request.POST.get('message')
@@ -339,7 +345,7 @@ def settings_view(request):
     Returns:
         HttpResponse: Rendered settings page.
     """
-    return render(request, "settings.html")
+    return render(request, "settings.html", {'spotify_username': request.user.userprofile.spotify_username})
 
 def wraps_view(request):
     """
@@ -356,7 +362,7 @@ def wraps_view(request):
 
     # Fetch saved wraps for the current user
     wraps = SpotifyWraps.objects.filter(user_profile=user_profile).order_by("-date_time")
-    return render(request, 'wraps.html', {'all_wraps': wraps})
+    return render(request, 'wraps.html', {'all_wraps': wraps, 'spotify_username': request.user.userprofile.spotify_username})
 
 def delete_wrap(request, wrap_id):
     """
