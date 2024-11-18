@@ -202,7 +202,7 @@ def spotify_login(request):
         HttpResponseRedirect: Redirect to Spotify's authorization page.
     """
     client_id = settings.SPOTIFY_CLIENT_ID
-    redirect_uri = 'http://localhost:8000/spotify/callback/'
+    redirect_uri = os.getenv('SPOTIFY_REDIRECT_URI')
     scope = SPOTIFY_SCOPE
     state = base64.urlsafe_b64encode(os.urandom(16)).decode('utf-8')
 
@@ -226,6 +226,7 @@ def spotify_callback(request):
     Returns:
         HttpResponseRedirect: Redirect to the user's profile upon successful login.
     """
+    redirect_uri = os.getenv('SPOTIFY_REDIRECT_URI')
     code = request.GET.get('code')
     if not code:
         messages.error(request, "Authorization code not found.")
@@ -235,7 +236,7 @@ def spotify_callback(request):
     data.update({
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': 'http://localhost:8000/spotify/callback/'
+        'redirect_uri': redirect_uri
     })
 
     token_response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data, timeout=10)
