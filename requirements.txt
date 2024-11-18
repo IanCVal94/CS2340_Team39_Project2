@@ -8,4 +8,5 @@ pytest
 coverage
 psycopg2~=2.9.10
 psycopg2-binary
+Pillow
 # postgresql@14
