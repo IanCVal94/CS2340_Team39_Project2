@@ -8,13 +8,13 @@
     <div>
         <div class="index-outer-box">
             <div class="index-left-box">
-                <div class="index-text-box">You have been very diverse over the past {3 months}, {Jack}!</div>
+                <div class="index-text-box">You have been very diverse over the past {{ length }}, {{ username }}!</div>
 
             </div>
             <img class="wrap-img" src="{% static 'img/wrap-icons/radio.png' %}" alt="radio image">
         </div>
         <div class="wrap-next-container">
-            <a class="wrap-next" href="{% url 'wrap6' %}">Next</a>
+            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=6 wrap_id=wrap_num%}">Next</a>
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
         </div>
     </div>

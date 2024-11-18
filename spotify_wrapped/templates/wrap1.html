@@ -8,13 +8,13 @@
     <div>
         <div class="index-outer-box">
             <div class="index-left-box">
-                <div class="index-text-box">You listened to a lot of artists over the past {3 months}!</div>
+                <div class="index-text-box">You listened to a lot of artists over the past {{ length }}!</div>
 
             </div>
             <img class="wrap-img" src="{% static 'img/wrap-icons/artist.png' %}" alt="artist image">
         </div>
         <div class="wrap-next-container">
-            <a class="wrap-next" href="{% url 'wrap2' %}">Next</a>
+            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=2 wrap_id=wrap_num%}">Next</a>
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
         </div>
     </div>

@@ -9,18 +9,16 @@
         <div class="index-outer-box">
             <div class="index-left-box">
                 <div class="index-text-box">Here are your top 5 genres: <br>
-                    1. genre <br>
-                    2. genre <br>
-                    3. genre <br>
-                    4. genre <br>
-                    5. genre
+                    {% for genre in top_genres %}
+                        {{ forloop.counter }}. {{ genre }} <br>
+                    {% endfor %}
                 </div>
 
             </div>
             <img class="wrap-img" src="{% static 'img/wrap-icons/radio.png' %}" alt="radio image">
         </div>
         <div class="wrap-next-container">
-            <a class="wrap-next" href="{% url 'wrap7' %}">Next</a>
+            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=7 wrap_id=wrap_num%}">Next</a>
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
         </div>
     </div>

@@ -1,6 +1,7 @@
 """
 Views for handling user authentication, Spotify integration, and app functionality.
 """
+import collections
 import os
 import pprint
 import secrets
@@ -14,12 +15,14 @@ from random import random
 
 import certifi
 import requests
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.template.response import TemplateResponse
 from django.utils import timezone, translation
 from django.core.mail import send_mail
 
@@ -27,6 +30,9 @@ from .models import UserProfile
 from .utils import refresh_spotify_token
 from .utils import get_spotify_auth_headers
 import ssl
+from .models import SpotifyWraps, UserProfile
+import json
+from collections import Counter
 
 
 # Spotify OAuth Constants
@@ -40,68 +46,134 @@ session.verify = False
 
 def index(request):
     """
-    Renders the index page.
+    Renders the homepage of the application.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered homepage.
     """
     return render(request, 'index.html')
 
 def wrap_base(request):
     """
     Renders the wrap_base page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered wrap_base page.
     """
     return render(request, 'wrap_base.html')
 
 def wrap1(request):
     """
-    Renders the wrap 1 page.
+    Renders the wrap1 page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered wrap1 page.
     """
     return render(request, 'wrap1.html')
 
 def wrap2(request):
     """
-    Renders the wrap 2 page.
+    Renders the wrap2 page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered wrap2 page.
     """
     return render(request, 'wrap2.html')
 
 def wrap3(request):
     """
-    Renders the wrap 3 page.
+    Renders the wrap3 page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered wrap3 page.
     """
     return render(request, 'wrap3.html')
 
 def wrap4(request):
     """
-    Renders the wrap 4 page.
+    Renders the wrap4 page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered wrap4 page.
     """
     return render(request, 'wrap4.html')
 
 def wrap5(request):
     """
-    Renders the wrap 5 page.
+    Renders the wrap5 page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered wrap5 page.
     """
     return render(request, 'wrap5.html')
 
 def wrap6(request):
     """
-    Renders the wrap 6 page.
+    Renders the wrap6 page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered wrap6 page.
     """
     return render(request, 'wrap6.html')
 
 def wrap7(request):
     """
-    Renders the wrap 7 page.
+    Renders the wrap7 page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered wrap7 page.
     """
     return render(request, 'wrap7.html')
 
 def login_view(request):
     """
-    Handles user login and authentication.
+    Handles user login and authentication by redirecting to Spotify login.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered spotify_login page.
     """
     return spotify_login(request)
 
 
 def logout_view(request):
     """
-    Logs the user out and clears the session.
+    Logs the user out by clearing session data and redirecting to a logout page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered logout page.
     """
     # Clear Spotify session tokens
     if 'spotify_access_token' in request.session:
@@ -117,7 +189,13 @@ def logout_view(request):
 
 def spotify_login(request):
     """
-    Redirects the user to Spotify's authorization page.
+    Redirects the user to Spotify's OAuth authorization page.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponseRedirect: Redirect to Spotify's authorization page.
     """
     client_id = settings.SPOTIFY_CLIENT_ID
     redirect_uri = 'http://localhost:8000/spotify/callback/'
@@ -136,7 +214,13 @@ def spotify_login(request):
 
 def spotify_callback(request):
     """
-    Handles Spotify OAuth callback and token exchange.
+    Handles Spotify's OAuth callback to exchange a code for access and refresh tokens.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponseRedirect: Redirect to the user's profile upon successful login.
     """
     code = request.GET.get('code')
     if not code:
@@ -201,7 +285,13 @@ def spotify_callback(request):
 @login_required
 def profile_view(request):
     """
-    Displays the user's profile with their past wraps.
+    Displays the logged-in user's profile, including past Spotify wraps.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered profile page with user profile data.
     """
     print(request.user)
     user_profile = None
@@ -216,10 +306,13 @@ def profile_view(request):
 
 def contact_view(request):
     """
-    Handles the contact form and sends an email.
+    Handles the contact form submissions and sends an email.
 
     Args:
-        request (HttpRequest): The request object containing the form data.
+        request (HttpRequest): The request object containing form data.
+
+    Returns:
+        HttpResponse: Rendered contact page with success or error message.
     """
     context = {}
     if request.method == 'POST':
@@ -238,82 +331,197 @@ def contact_view(request):
 
 def settings_view(request):
     """
-    Displays the user's profile settings
+    Renders the settings page for the user's profile.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered settings page.
     """
     return render(request, "settings.html")
 
 def wraps_view(request):
     """
-    Collects all the necessary wrap information and renders the wraps
-    presentation and saved the information to an instance of the SpotifyWraps model
+    Displays all Spotify wraps associated with the logged-in user.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered wraps page with all wraps.
     """
-    user_profile = None
-    if hasattr(request.user, 'userprofile'):
-        user_profile = request.user.userprofile
-    else:
-        messages.error(request, "No userprofile attribute")
+    user_profile = UserProfile.objects.get(user=request.user)
     token = user_profile.spotify_access_token
-    headers = {
-        'Authorization': f'Bearer {token}'
+
+    # Fetch saved wraps for the current user
+    wraps = SpotifyWraps.objects.filter(user_profile=user_profile).order_by("-date_time")
+    return render(request, 'wraps.html', {'all_wraps': wraps})
+
+def delete_wrap(request, wrap_id):
+    """
+    Deletes a specific Spotify wrap associated with the logged-in user.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered wraps page with deleting the specific wrap.
+    """
+    try:
+        wrap = SpotifyWraps.objects.get(id=wrap_id, user_profile__user=request.user)
+        wrap.delete()
+        return JsonResponse({"message": "Wrap deleted successfully."})
+    except SpotifyWraps.DoesNotExist:
+        return JsonResponse({"error": "Wrap not found."}, status=404)
+
+
+def view_wrap(request, page_num=0, wrap_id=-1):
+    """
+    Views a specific Spotify wrap associated with the logged-in user.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered the specific wrap presentation slides.
+    """
+    user_profile = UserProfile.objects.get(user=request.user)
+    timeframe = request.GET.get("timeframe")
+    # wrap_id = request.GET.get("wrap_id")
+
+    if wrap_id != -1:
+        try:
+            wrap = SpotifyWraps.objects.get(id=wrap_id, user_profile=user_profile)
+        except SpotifyWraps.DoesNotExist:
+            messages.error(request, "Wrap not found.")
+            return redirect('wraps_view')
+    elif timeframe:
+        # Create a new wrap for the specified timeframe
+        wrap = create_wrap_for_timeframe(user_profile, timeframe)
+    else:
+        messages.error(request, "Invalid request.")
+        return redirect('wraps_view')
+
+    # Prepare context
+    context = {
+        'username': request.user.username,
+        'length': wrap.length,
+        'date_time': wrap.date_time,
+        'top_songs': json.loads(wrap.top_songs),
+        'top_artists': json.loads(wrap.top_artists),
+        'top_genres': json.loads(wrap.top_genres),
+        'num_distinct_artists': wrap.num_distinct_artists,
+        'num_genres': wrap.num_genres,
+        'wrap_index': page_num,
+        'wrap_num': wrap.id,
     }
 
-    # Base URL for Spotify's top tracks endpoint
-    base_url = "https://api.spotify.com/v1/me/top/tracks?limit=50"
-
-    # Get short-term top tracks
-    short_term_url = f"{base_url}&time_range=short_term"
-    response_short = requests.get(short_term_url, headers=headers)
-    short_term_tracks = response_short.json()
-
-    # Get medium-term top tracks
-    medium_term_url = f"{base_url}&time_range=medium_term"
-    response_medium = requests.get(medium_term_url, headers=headers)
-    medium_term_tracks = response_medium.json()
-
-    # Get long-term top tracks
-    long_term_url = f"{base_url}&time_range=long_term"
-    response_long = requests.get(long_term_url, headers=headers)
-    long_term_tracks = response_long.json()
-
-    current_time_ms = int(time.time() * 1000)
-
-    # Calculate the 'after' timestamp, which is 5 minutes (300,000 ms) ago
-    five_minutes_ago_ms = current_time_ms - 300000
-
-    # Set up the request URL
-    recently_played_url = f"https://api.spotify.com/v1/me/player/recently-played?limit=50&after={five_minutes_ago_ms}"
-    recent_response = requests.get(recently_played_url, headers=headers)
-    recent_tracks = recent_response.json()
-
-    # Extract artist IDs from long-term top tracks
-    artist_ids = set(
-        artist['id']
-        for track in long_term_tracks.get('items', [])
-        for artist in track['artists']
-    )
-
-    # Retrieve genres for each artist
-    artist_genres = []
-    for artist_id in artist_ids:
-        artist_url = f"https://api.spotify.com/v1/artists/{artist_id}"
-        response_artist = requests.get(artist_url, headers=headers)
-        artist_data = response_artist.json()
-        artist_genres.extend(artist_data.get('genres', []))
-
-    # Count the most frequent genres
-    genre_counts = Counter(artist_genres)
-    top_genres = [genre[0] for genre in genre_counts.most_common(5)]
-
-    # Prepare top 5 recent tracks for display
-    recent_top_five = [
-        {
-            'name': track['name'],
-            'artist': track['artists'][0]['name']
-        }
-        for track in short_term_tracks.get('items', [])[:5]
+    # Templates for wrap pages
+    wrap_templates = [
+        'wrap_base.html',
+        'wrap1.html',
+        'wrap2.html',
+        'wrap3.html',
+        'wrap4.html',
+        'wrap5.html',
+        'wrap6.html',
+        'wrap7.html',
     ]
+    template = wrap_templates[page_num]
 
-    return render(request, 'wraps.html', {
-        'top_five': recent_top_five,
-        'top_genres': top_genres
-    })
+    return TemplateResponse(request, template, context)
+
+
+def create_wrap_for_timeframe(user_profile, timeframe):
+    """
+    Creates a new Spotify wrap for a given timeframe by fetching top songs,
+    artists, and genres from the Spotify API.
+
+    Args:
+        user_profile (UserProfile): The user's profile.
+        timeframe (str): The time range for the wrap.
+
+    Returns:
+        SpotifyWraps: The created wrap object.
+    """
+    token = user_profile.spotify_access_token
+    headers = {'Authorization': f'Bearer {token}'}
+    time_mapping = {
+        "1 month": "short_term",
+        "1 year": "medium_term",
+        "5 years": "long_term",
+    }
+    time_range = time_mapping.get(timeframe, "short_term")
+
+    # Fetch data from Spotify API
+    base_url_tracks = "https://api.spotify.com/v1/me/top/tracks?limit=50"
+    response_tracks = requests.get(f"{base_url_tracks}&time_range={time_range}", headers=headers)
+    tracks_data = response_tracks.json()
+
+    base_url_artists = "https://api.spotify.com/v1/me/top/artists?limit=50"
+    response_artists = requests.get(f"{base_url_artists}&time_range={time_range}", headers=headers)
+    artists_data = response_artists.json()
+
+    # Extract top songs, artists, and genres
+    top_songs = [track.get("name", "None (Spotify was not used)") for track in tracks_data.get("items", [])[:5]]
+    top_artists = [artist.get("name", "None (Spotify was not used)") for artist in artists_data.get("items", [])[:5]]
+
+    all_genres = []
+    for artist in artists_data.get("items", []):
+        all_genres.extend(artist.get("genres", []))
+
+    # Count occurrences of each genre
+    genre_counter = collections.Counter(all_genres)
+
+    # Get the top 5 genres, or use fallback if empty
+    top_genres = [genre for genre, count in genre_counter.most_common(5)]
+    if not top_genres:
+        top_genres = ["None (Spotify was not used during the time interval selected)"]
+
+    # Ensure fallback for any empty sections
+    if not top_songs:
+        top_songs = ["None (Spotify was not used during the time interval selected)"]
+    if not top_artists:
+        top_artists = ["None (Spotify was not used during the time interval selected)"]
+
+    num_distinct_artists = len(set(artist for artist in top_artists if artist != "None (Spotify was not used)"))
+    num_genres = len(set(top_genres)) if top_genres[0] != "None (Spotify was not used)" else 0
+
+    # Save wrap
+    wrap = SpotifyWraps.objects.create(
+        user_profile=user_profile,
+        top_songs=json.dumps(top_songs),
+        top_artists=json.dumps(top_artists),
+        top_genres=json.dumps(top_genres),
+        length=timeframe,
+        num_distinct_artists=num_distinct_artists,
+        num_genres=num_genres,
+    )
+    print(f"Created wrap: {wrap}")
+    return wrap
+
+def delete_account(request):
+    """
+    Deletes all wraps associated with the logged-in user's account and logs them out.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: Rendered home page.
+    """
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        # Delete all wraps for the user's profile
+        SpotifyWraps.objects.filter(user_profile=user_profile).delete()
+
+        # Log the user out
+        logout(request)
+        messages.success(request, "Your account data has been deleted, and you have been logged out.")
+
+        # Redirect to the homepage
+        return redirect('index')
+    except UserProfile.DoesNotExist:
+        messages.error(request, "No account data found to delete.")
+        return redirect('settings_view')

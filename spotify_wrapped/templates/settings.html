@@ -9,7 +9,7 @@
         <div class="settings-row">
             <div class="label">{% trans "Account" %}</div>
             <button class="button logout" onclick="window.location.href={% url 'logout' %}">{% trans "Logout" %}</button>
-            <button class="button delete">{% trans "Delete" %}</button>
+            <button class="button delete" onclick="window.location.href='{% url 'delete_account' %}'">{% trans "Delete" %}</button>
         </div>
         <div class="settings-row">
             <div class="label">Theme</div>

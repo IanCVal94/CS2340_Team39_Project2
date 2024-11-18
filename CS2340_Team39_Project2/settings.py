@@ -123,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
 USE_L10N = True
@@ -169,4 +169,3 @@ EMAIL_HOST_PASSWORD = 'kgep hzsu zway hdtq'
 # DEFAULT_FROM_EMAIL = 'Spotify Wrapped Project'
 
 # os.environ['SSL_CERT_FILE'] = certifi.where()
-

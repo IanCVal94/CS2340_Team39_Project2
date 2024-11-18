@@ -3,21 +3,60 @@
 {% block title %}Wraps{% endblock %}
 
 {% block content %}
-    <div class="settings-container">
-        <h2>Create an Autumn Anthem</h2>
-        <div class="create-wrap-row">
-            <button class="button halloween">Past 1 Month</button>
-            <button class="button dark">Past 1 Year</button>
-            <button class="button light">Past 5 Years</button>
-        </div>
-        <h2>My Autumn Anthems</h2>
-        <div class="manage-wrap-row">
-            <div class="label">Past 3 Months - Created Oct  30th, 1:32pm</div>
-            <button class="button logout">View</button>
-            <button class="button delete">Delete</button>
-        </div>
+<div class="settings-container">
+    <h2>Create an Autumn Anthem</h2>
+    <div class="create-wrap-row">
+        <button class="button halloween" onclick="location.href='/wraps/0/?timeframe=1%20month';">Past 1 Month</button>
+        <button class="button dark" onclick="location.href='/wraps/0/?timeframe=1%20year';">Past 1 Year</button>
+        <button class="button light" onclick="location.href='/wraps/0/?timeframe=5%20years';">Past 5 Years</button>
+    </div>
+
+{#    <h2>My Autumn Anthems</h2>#}
+{#    <div class="manage-wrap-row">#}
+{#        <div class="label">Past 3 Months - Created Oct 30th, 1:32pm</div>#}
+{#        <button class="button logout">View</button>#}
+{#        <button class="button delete">Delete</button>#}
+{#    </div>#}
+
+    <h2>My Saved Wraps</h2>
+    <div class="saved-wraps">
+        {% for wrap in all_wraps %}
+            <div class="manage-wrap-row">
+                <div class="label">{{ wrap.length }} - Created {{ wrap.date_time|date:"F j, Y, g:i a" }}</div>
+                <form action="{% url 'view_wrap_with_id' page_num=0 wrap_id=wrap.id  %}" method="get">
+                    <button class="button logout" type="submit">View</button>
+                </form>
+                <button class="button delete" onclick="deleteWrap({{ wrap.id }});">Delete</button>
+            </div>
+        {% endfor %}
+    </div>
 
     <a href="{% url 'contact' %}" class="meet-team-button"></a>
+</div>
+
+<script>
+    /**
+     * deleteWrap - Brief description of the function.
+     * @param {type} wrapId - Description of wrapId.
+     * @returns {type} Description of the return value.
+     */
+    function deleteWrap(wrapId) {
+        fetch(`/wraps/delete/${wrapId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message);
+                location.reload();  // Reload page to update wraps list
+            }
+        })
+        .catch(error => console.error("Error deleting wrap:", error));
+    }
+</script>
 {% endblock %}
 
 
@@ -42,4 +81,3 @@
 {#</ol>#}
 {##}
 {#{% endblock %}#}
-

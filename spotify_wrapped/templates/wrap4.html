@@ -9,17 +9,15 @@
         <div class="index-outer-box">
             <div class="index-left-box">
                 <div class="index-text-box">Here are your top 5 songs: <br>
-                    1. song <br>
-                    2. song <br>
-                    3. song <br>
-                    4. song <br>
-                    5. song
+                    {% for song in top_songs %}
+                        {{ forloop.counter }}. {{ song }} <br>
+                    {% endfor %}
                 </div>
             </div>
             <img class="wrap-img" src="{% static 'img/wrap-icons/library_music.png' %}" alt="library music image">
         </div>
         <div class="wrap-next-container">
-            <a class="wrap-next" href="{% url 'wrap5' %}">Next</a>
+            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=5 wrap_id=wrap_num%}">Next</a>
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
         </div>
     </div>
