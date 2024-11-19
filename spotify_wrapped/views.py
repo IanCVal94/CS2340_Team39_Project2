@@ -319,7 +319,7 @@ def contact_view(request):
     Returns:
         HttpResponse: Rendered contact page with success or error message.
     """
-    context = None
+    context = {}
     if request.user.is_authenticated:
         context = {'spotify_username': request.user.userprofile.spotify_username}
     if request.method == 'POST':
@@ -412,7 +412,7 @@ def view_wrap(request, page_num=0, wrap_id=-1):
 
     # Prepare context
     context = {
-        'username': request.user.username,
+        'spotify_username': request.user.userprofile.spotify_username,
         'length': wrap.length,
         'date_time': wrap.date_time,
         'top_songs': json.loads(wrap.top_songs),
