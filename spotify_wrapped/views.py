@@ -3,36 +3,25 @@ Views for handling user authentication, Spotify integration, and app functionali
 """
 import collections
 import os
-import pprint
-import secrets
-import string
-import time
 import base64
 import urllib.parse
-from collections import Counter
-from datetime import datetime, timedelta
-from random import random
+from datetime import timedelta
+import json
 
-import certifi
 import requests
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.template.response import TemplateResponse
-from django.utils import timezone, translation
+from django.utils import timezone
 from django.core.mail import send_mail
 
-from .models import UserProfile
-from .utils import refresh_spotify_token
+from .models import UserProfile, SpotifyWraps
 from .utils import get_spotify_auth_headers
-import ssl
-from .models import SpotifyWraps, UserProfile
-import json
-from collections import Counter
+
 
 
 # Spotify OAuth Constants
@@ -215,6 +204,37 @@ def spotify_login(request):
     )
     return redirect(auth_url)
 
+def fetch_spotify_token(data, headers):
+    """
+    Fetches Spotify tokens using the provided data and headers.
+
+    Args:
+        data (HttpRequest): spotify data.
+        headers (HttpRequest): spotify headers.
+
+    Returns:
+        response: spotify response info in json format.
+    """
+    response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data, timeout=10)
+    if response.status_code != 200:
+        return None
+    return response.json()
+
+def fetch_spotify_user_info(access_token):
+    """
+    Fetches Spotify user information using the access token.
+
+    Args:
+        access_token (HttpRequest): spotify access token.
+
+    Returns:
+        response: spotify response info in json format.
+    """
+    headers = {'Authorization': f'Bearer {access_token}'}
+    response = requests.get(f"{SPOTIFY_API_BASE_URL}/me", headers=headers, timeout=10)
+    if response.status_code != 200:
+        return None
+    return response.json()
 
 def spotify_callback(request):
     """
@@ -239,25 +259,21 @@ def spotify_callback(request):
         'redirect_uri': redirect_uri
     })
 
-    token_response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data, timeout=10)
-    if token_response.status_code != 200:
+    token_info = fetch_spotify_token(data, headers)
+    if not token_info:
         messages.error(request, "Failed to obtain access token.")
         return redirect('index')
 
-    token_info = token_response.json()
     access_token = token_info.get('access_token')
     refresh_token = token_info.get('refresh_token')
     expires_in = token_info.get('expires_in')
     expires_at = timezone.now() + timedelta(seconds=expires_in)
 
-    headers = {'Authorization': f'Bearer {access_token}'}
-    spotify_user_response = requests.get(f"{SPOTIFY_API_BASE_URL}/me", headers=headers, timeout=10)
-    if spotify_user_response.status_code != 200:
+    spotify_user_info = fetch_spotify_user_info(token_info.get('access_token'))
+    if not spotify_user_info:
         messages.error(request, "Failed to fetch Spotify user information.")
         return redirect('index')
 
-    spotify_user_info = spotify_user_response.json()
-    print(spotify_user_info)
     spotify_user_id = spotify_user_info['id']
     spotify_username = spotify_user_info.get('display_name', spotify_user_id)
     internal_email = f'{spotify_user_id}@spotify.com'
@@ -271,7 +287,7 @@ def spotify_callback(request):
         user.email = internal_email
         user.save()
 
-    login(request, user)  # Log the user in
+    login(request, user)
 
     # Create or update user profile using Spotify details
     user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
@@ -285,29 +301,6 @@ def spotify_callback(request):
     messages.success(request, f"Logged in as {spotify_username}")
 
     return redirect('index')
-
-
-# @login_required
-# def profile_view(request):
-#     """
-#     Displays the logged-in user's profile, including past Spotify wraps.
-#
-#     Args:
-#         request (HttpRequest): The request object.
-#
-#     Returns:
-#         HttpResponse: Rendered profile page with user profile data.
-#     """
-#     print(request.user)
-#     user_profile = None
-#     if hasattr(request.user, 'userprofile'):
-#         user_profile = request.user.userprofile
-#     else:
-#         messages.error(request, "No userprofile attribute")
-#
-#     return render(request, 'profile.html', {'user_profile': user_profile, 'spotify_username': request.user.userprofile.spotify_username})
-#
-
 
 def contact_view(request):
     """
