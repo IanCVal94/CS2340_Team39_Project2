@@ -13,9 +13,9 @@
         </div>
         <div class="settings-row">
             <div class="label">Theme</div>
-            <button class="button halloween">{% trans "Halloween" %}</button>
-            <button class="button dark">{% trans "Dark" %}</button>
-            <button class="button light">{% trans "Light" %}</button>
+            <button class="button halloween" onclick="window.location.href='{% url 'set_theme' 'holiday' %}'">{% trans "Halloween" %}</button>
+            <button class="button dark" onclick="window.location.href='{% url 'set_theme' 'dark' %}'">{% trans "Dark" %}</button>
+            <button class="button light" onclick="window.location.href='{% url 'set_theme' 'light' %}'">{% trans "Light" %}</button>
         </div>
         <form action="{% url 'set_language' %}" method="post">
         <div class="settings-row">

@@ -1,0 +1,107 @@
+nav {
+    color: black;
+}
+
+nav a {
+    color: black;
+}
+
+.username {
+    color: black;
+}
+
+h2 {
+    color: black;
+}
+
+.index-text-box {
+    color: black;
+}
+
+.index-sign-in {
+    color: black;
+}
+
+.wrap-next {
+    color: black;
+}
+
+.wrap-next-final {
+    color: black;
+}
+
+h3 {
+    color: black;
+}
+
+#team h4 {
+    color: black;
+}
+
+p {
+    color: black;
+}
+
+.feedback-form p {
+    color: black;
+}
+
+.settings-container h2 {
+    color: black;
+}
+
+.create-wrap-row {
+    color: black;
+}
+
+.label {
+    color: black;
+}
+
+.settings-row {
+    background-color: white;
+}
+
+.settings-row .button {
+    color: black;
+}
+
+.create-wrap-row .button {
+    color: black;
+}
+
+.manage-wrap-row .button {
+    color: black;
+}
+
+.logout {
+    background-color: #F1B111;
+}
+
+.delete {
+    background-color: #FF1A72;
+}
+
+.halloween {
+    background-color: #E84000;
+}
+
+.dark {
+    background-color: #EB6123;
+}
+
+.light {
+    background-color: #F1B111;
+}
+
+.english {
+    background-color: #E84000;
+}
+
+.azerbaijani {
+    background-color: #EB6123;
+}
+
+.russian {
+    background-color: #F1B111;
+}

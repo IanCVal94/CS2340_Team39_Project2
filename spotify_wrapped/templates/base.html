@@ -9,40 +9,72 @@
     <title>{% block title %}Spotify Wrapper{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% if request.session.theme == 'light' %}
+        <link rel="stylesheet" href="{% static 'css/light.css' %}">
+    {% elif request.session.theme == 'dark' %}
+        <link rel="stylesheet" href="{% static 'css/dark.css' %}">
+    {% endif %}
+
     <style>
         body {
+        {% if request.session.theme == 'light' %}
+            background-color: white;
+        {% else %}
             background-color: #0D0D0D;
+        {% endif %}
             height: 100vh;
-            background-image: url('{% static "img/background/Radiant.png" %}');
+        {% if request.session.theme == 'holiday' %}
+            background-image: url('{% static "img/background/Holiday.png" %}');
+        {% else %}
+            background-image: url('{% static "img/background/Normal.png" %}');
+        {% endif %}
             background-repeat: no-repeat;
             background-position: center;
             background-size: 130%;
         }
 
+        nav {
+        {% if request.session.theme == 'light' %}
+            background-color: white;
+        {% else %}
+            background-color: rgba(0, 0, 0, 0.64);
+        {% endif %}
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+            font-family: Inter, sans-serif;
+        }
+
         .username {
-            color: #FFF;
-            text-align: right;
             font-family: Inter, sans-serif;
             font-size: 17.5px;
             font-style: normal;
             font-weight: 600;
             line-height: normal;
-            margin-right: 10px; /* Space between username and logo */
         }
 
         .name-container {
             display: flex;
-            align-items: center; /* Center user info vertically */
+            align-items: center;
         }
 
         .spotify-logo {
-            width: 32px; /* Adjust logo size */
-            height: auto;
+            width: 32px;
+            height: 32px;
             margin-left: 10px;
         }
     </style>
+
 </head>
-<body>
+<body class="main-body">
     <nav class="navbar">
         <a class="title" href="{% url 'index' %}">{% trans "Your Autumn Anthem" %}</a>
         {% if user.is_authenticated %}

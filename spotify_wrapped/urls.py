@@ -28,5 +28,6 @@ urlpatterns = [
     path('spotify/callback/', views.spotify_callback, name='spotify_callback'),
     path('set_language/', set_language, name='set_language'),
     path('delete-account/', views.delete_account, name='delete_account'),
+    path('set-theme/<str:theme_name>/', views.set_theme, name='set_theme'),
 
 ]

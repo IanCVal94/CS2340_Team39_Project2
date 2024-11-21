@@ -1,33 +1,14 @@
-nav {
-    background-color: rgba(0, 0, 0, 0.64);
-    color: #fff;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    box-sizing: border-box;
-    font-family: Inter, sans-serif;
-}
-
 nav .title {
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-    margin-right: auto;
-    margin-left: auto;
 }
 
 /* Link styling within navbar */
 nav a {
     color: #fff;
     text-decoration: none;
-    margin: 0 10px;
 }
 
 nav a:hover {
@@ -165,6 +146,11 @@ h2 {
 }
 
 .pumpk-img {
+    width: 30%;
+    height: auto;
+}
+
+.instruments-img {
     width: 30%;
     height: auto;
 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-14 14:18-0500\n"
+"POT-Creation-Date: 2024-11-18 16:51-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,47 +20,29 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: spotify_wrapped/templates/base.html:25
-msgid "Home"
-msgstr "Главная"
-
-#: spotify_wrapped/templates/base.html:27
-msgid "Profile"
-msgstr "Профиль"
-
-#: spotify_wrapped/templates/base.html:28
-#: spotify_wrapped/templates/settings.html:11
-msgid "Logout"
-msgstr "Выйти"
-
-#: spotify_wrapped/templates/base.html:29
-msgid "Wraps"
-msgstr "Сборы"
-
-#: spotify_wrapped/templates/base.html:30
-msgid "Wrap base"
-msgstr "База сборов"
-
-#: spotify_wrapped/templates/base.html:31
-#: spotify_wrapped/templates/settings.html:8
-msgid "Settings"
-msgstr "Настройки"
-
-#: spotify_wrapped/templates/base.html:33
-msgid "Login"
-msgstr "Войти"
-
-#: spotify_wrapped/templates/base.html:35
-msgid "Contact The Team"
-msgstr "Связаться с командой"
+#: spotify_wrapped/templates/base.html:47
+msgid "Your Autumn Anthem"
+msgstr "Ваш осенний гимн"
 
 #: spotify_wrapped/templates/contact.html:11
 msgid "Meet the Development Team"
 msgstr "Познакомьтесь с командой разработчиков"
 
+#: spotify_wrapped/templates/index.html:11
+msgid "Connect your Spotify account this Fall to reveal your spooky taste."
+msgstr "Подключите свой аккаунт Spotify этой осенью, чтобы узнать свои жуткие предпочтения."
+
+#: spotify_wrapped/templates/settings.html:8
+msgid "Settings"
+msgstr "Настройки"
+
 #: spotify_wrapped/templates/settings.html:10
 msgid "Account"
 msgstr "Аккаунт"
+
+#: spotify_wrapped/templates/settings.html:11
+msgid "Logout"
+msgstr "Выйти"
 
 #: spotify_wrapped/templates/settings.html:12
 msgid "Delete"

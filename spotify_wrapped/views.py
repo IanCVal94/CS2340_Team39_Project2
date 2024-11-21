@@ -532,3 +532,8 @@ def delete_account(request):
     except UserProfile.DoesNotExist:
         messages.error(request, "No account data found to delete.")
         return redirect('settings_view')
+
+def set_theme(request, theme_name):
+    if theme_name in ['holiday', 'dark', 'light']:
+        request.session['theme'] = theme_name
+    return redirect('index')
