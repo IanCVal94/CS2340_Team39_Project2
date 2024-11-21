@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 
     <div>
         <div class="index-outer-box">
             <div class="index-left-box">
-                <div class="index-text-box">Here are your top 5 genres: <br>
+                <div class="index-text-box">{% trans "Here are your top 5 genres:" %} <br>
                     {% for genre in top_genres %}
                         {{ forloop.counter }}. {{ genre }} <br>
                     {% endfor %}

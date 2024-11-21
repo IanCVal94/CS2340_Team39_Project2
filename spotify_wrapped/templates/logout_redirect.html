@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
+<style>
+    .redirect-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+</style>
 
-<p>You are being redirected to Spotify log out page...</p>
+<p class="redirect-message">{% trans "You are being redirected to Spotify log out page..." %}</p>
 
 <script type="text/javascript">
     window.open("https://accounts.spotify.com/login", "_blank", "width=500,height=600");

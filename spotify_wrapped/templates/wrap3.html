@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 
     <div>
         <div class="index-outer-box">
             <div class="index-left-box">
-                <div class="index-text-box">They couldn’t keep you away from listening to songs if they tried {{ spotify_username }}!</div>
+                <div class="index-text-box">{% trans "They couldn’t keep you away from listening to songs if they tried" %} + {{ spotify_username }}!</div>
 
             </div>
             <img class="wrap-img" src="{% static 'img/wrap-icons/library_music.png' %}" alt="library music image">
         </div>
         <div class="wrap-next-container">
-            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=4 wrap_id=wrap_num%}">Next</a>
+            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=4 wrap_id=wrap_num%}">{% trans "Next" %}</a>
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
         </div>
     </div>

@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 
     <div>
         <div class="index-outer-box">
             <div class="index-left-box">
-                <div class="index-text-box">Here are your top 5 artists: <br>
+                <div class="index-text-box">{% trans "Here are your top 5 artists:" %}<br>
                     {% for artist in top_artists %}
                         {{ forloop.counter }}. {{ artist }} <br>
                     {% endfor %}
@@ -15,7 +16,7 @@
             <img class="wrap-img" src="{% static 'img/wrap-icons/artist.png' %}" alt="artist image">
         </div>
         <div class="wrap-next-container">
-            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=3 wrap_id=wrap_num%}">Next</a>
+            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=3 wrap_id=wrap_num%}">{% trans "Next" %}</a>
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
         </div>
     </div>

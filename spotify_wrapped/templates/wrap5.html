@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 
     <div>
         <div class="index-outer-box">
             <div class="index-left-box">
-                <div class="index-text-box">You have been very diverse over the past {{ length }}, {{ spotify_username }}!</div>
+                <div class="index-text-box">{% trans "You have been very diverse over the past {{ length }}, {{ spotify_username }}!" %}</div>
 
             </div>
             <img class="wrap-img" src="{% static 'img/wrap-icons/radio.png' %}" alt="radio image">

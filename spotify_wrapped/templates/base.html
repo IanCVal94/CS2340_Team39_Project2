@@ -80,7 +80,9 @@
         {% if user.is_authenticated %}
             <div class="name-container">
                 <a class="username" href="{% url 'settings' %}">{{ spotify_username }}</a>
-                <img class="spotify-logo" src="{% static 'img/spotify_logo.png' %}" alt="spotify logo">
+                <a href="{% url 'settings' %}">
+                    <img class="spotify-logo" src="{% static 'img/spotify_logo.png' %}" alt="spotify logo">
+                </a>
             </div>
         {% endif %}
     </nav>

@@ -12,14 +12,14 @@
             <button class="button delete" onclick="window.location.href='{% url 'delete_account' %}'">{% trans "Delete" %}</button>
         </div>
         <div class="settings-row">
-            <div class="label">Theme</div>
+            <div class="label">{% trans "Theme" %}</div>
             <button class="button halloween" onclick="window.location.href='{% url 'set_theme' 'holiday' %}'">{% trans "Halloween" %}</button>
             <button class="button dark" onclick="window.location.href='{% url 'set_theme' 'dark' %}'">{% trans "Dark" %}</button>
             <button class="button light" onclick="window.location.href='{% url 'set_theme' 'light' %}'">{% trans "Light" %}</button>
         </div>
         <form action="{% url 'set_language' %}" method="post">
         <div class="settings-row">
-            <div class="label">Language</div>
+            <div class="label">{% trans "Language" %}</div>
                 {% csrf_token %}
                 <button type="submit" name="language" value="en" class="button english">{% trans "English" %}</button>
                 <button type="submit" name="language" value="az" class="button azerbaijani">{% trans "Azerbaijani" %}</button>

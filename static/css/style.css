@@ -488,3 +488,11 @@ p {
     background-color: #F1B111;
     margin-right: 15px;
 }
+
+.redirect-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}

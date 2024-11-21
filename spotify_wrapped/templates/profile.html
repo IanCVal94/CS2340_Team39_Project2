@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-<h2>Your Profile</h2>
+<h2>{% trans "Your Profile" %}</h2>
 <p>Welcome, {{ user_profile.spotify_username }}!</p>
 
-<a href="{% url 'logout' %}">Logout</a>
+<a href="{% url 'logout' %}">{% trans "Logout" %}</a>
 {% endblock %}

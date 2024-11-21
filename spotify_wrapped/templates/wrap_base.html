@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block title %}Home{% endblock %}
 
@@ -8,13 +9,13 @@
     <div>
         <div class="index-outer-box">
             <div class="index-left-box">
-                <div class="index-text-box">You’re about to discover your music taste for the past {{ length }}, {{ spotify_username }}</div>
+                <div class="index-text-box">{% trans "You’re about to discover your music taste for the past {{ length }}, {{ spotify_username }}"%}</div>
 
             </div>
             <img class="wrap-img" src="{% static 'img/wrap-icons/media_output.png' %}" alt="speaker and headphones image">
         </div>
         <div class="wrap-next-container">
-            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=1 wrap_id=wrap_num%}">Next</a>
+            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=1 wrap_id=wrap_num%}">{% trans "Next" %}</a>
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
         </div>
     </div>

@@ -10,9 +10,9 @@
         <div class="index-left-box">
             <div class="index-text-box">{% trans "Connect your Spotify account this Fall to reveal your spooky taste." %}</div>
             {% if user.is_authenticated %}
-                <a class="index-sign-in" href="{% url 'wraps_view' %}">See My Taste</a>
+                <a class="index-sign-in" href="{% url 'wraps_view' %}">{% trans "See My Taste" %}</a>
             {% else %}
-                <a class="index-sign-in" href="{% url 'login' %}">Sign into Spotify</a>
+                <a class="index-sign-in" href="{% url 'login' %}">{% trans "Sign into Spotify" %}</a>
             {% endif %}
         </div>
         {% if request.session.theme == 'holiday' %}
