@@ -3,36 +3,26 @@ Views for handling user authentication, Spotify integration, and app functionali
 """
 import collections
 import os
-import pprint
-import secrets
-import string
-import time
 import base64
 import urllib.parse
-from collections import Counter
-from datetime import datetime, timedelta
-from random import random
+from datetime import timedelta
+import json
 
-import certifi
 import requests
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.template.response import TemplateResponse
-from django.utils import timezone, translation
+from django.utils import timezone
 from django.core.mail import send_mail
+from openai import OpenAI
 
-from .models import UserProfile
-from .utils import refresh_spotify_token
+from .models import UserProfile, SpotifyWraps
 from .utils import get_spotify_auth_headers
-import ssl
-from .models import SpotifyWraps, UserProfile
-import json
-from collections import Counter
+
 
 
 # Spotify OAuth Constants
@@ -215,6 +205,37 @@ def spotify_login(request):
     )
     return redirect(auth_url)
 
+def fetch_spotify_token(data, headers):
+    """
+    Fetches Spotify tokens using the provided data and headers.
+
+    Args:
+        data (HttpRequest): spotify data.
+        headers (HttpRequest): spotify headers.
+
+    Returns:
+        response: spotify response info in json format.
+    """
+    response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data, timeout=10)
+    if response.status_code != 200:
+        return None
+    return response.json()
+
+def fetch_spotify_user_info(access_token):
+    """
+    Fetches Spotify user information using the access token.
+
+    Args:
+        access_token (HttpRequest): spotify access token.
+
+    Returns:
+        response: spotify response info in json format.
+    """
+    headers = {'Authorization': f'Bearer {access_token}'}
+    response = requests.get(f"{SPOTIFY_API_BASE_URL}/me", headers=headers, timeout=10)
+    if response.status_code != 200:
+        return None
+    return response.json()
 
 def spotify_callback(request):
     """
@@ -239,25 +260,21 @@ def spotify_callback(request):
         'redirect_uri': redirect_uri
     })
 
-    token_response = requests.post(SPOTIFY_TOKEN_URL, headers=headers, data=data, timeout=10)
-    if token_response.status_code != 200:
+    token_info = fetch_spotify_token(data, headers)
+    if not token_info:
         messages.error(request, "Failed to obtain access token.")
         return redirect('index')
 
-    token_info = token_response.json()
     access_token = token_info.get('access_token')
     refresh_token = token_info.get('refresh_token')
     expires_in = token_info.get('expires_in')
     expires_at = timezone.now() + timedelta(seconds=expires_in)
 
-    headers = {'Authorization': f'Bearer {access_token}'}
-    spotify_user_response = requests.get(f"{SPOTIFY_API_BASE_URL}/me", headers=headers, timeout=10)
-    if spotify_user_response.status_code != 200:
+    spotify_user_info = fetch_spotify_user_info(token_info.get('access_token'))
+    if not spotify_user_info:
         messages.error(request, "Failed to fetch Spotify user information.")
         return redirect('index')
 
-    spotify_user_info = spotify_user_response.json()
-    print(spotify_user_info)
     spotify_user_id = spotify_user_info['id']
     spotify_username = spotify_user_info.get('display_name', spotify_user_id)
     internal_email = f'{spotify_user_id}@spotify.com'
@@ -271,7 +288,7 @@ def spotify_callback(request):
         user.email = internal_email
         user.save()
 
-    login(request, user)  # Log the user in
+    login(request, user)
 
     # Create or update user profile using Spotify details
     user_profile, _ = UserProfile.objects.get_or_create(user=request.user)
@@ -285,29 +302,6 @@ def spotify_callback(request):
     messages.success(request, f"Logged in as {spotify_username}")
 
     return redirect('index')
-
-
-# @login_required
-# def profile_view(request):
-#     """
-#     Displays the logged-in user's profile, including past Spotify wraps.
-#
-#     Args:
-#         request (HttpRequest): The request object.
-#
-#     Returns:
-#         HttpResponse: Rendered profile page with user profile data.
-#     """
-#     print(request.user)
-#     user_profile = None
-#     if hasattr(request.user, 'userprofile'):
-#         user_profile = request.user.userprofile
-#     else:
-#         messages.error(request, "No userprofile attribute")
-#
-#     return render(request, 'profile.html', {'user_profile': user_profile, 'spotify_username': request.user.userprofile.spotify_username})
-#
-
 
 def contact_view(request):
     """
@@ -422,7 +416,10 @@ def view_wrap(request, page_num=0, wrap_id=-1):
         'num_genres': wrap.num_genres,
         'wrap_index': page_num,
         'wrap_num': wrap.id,
+        'wrap_LLM': wrap.LLM_description
     }
+
+
 
     # Templates for wrap pages
     wrap_templates = [
@@ -494,7 +491,37 @@ def create_wrap_for_timeframe(user_profile, timeframe):
 
     num_distinct_artists = len(set(artist for artist in top_artists if artist != "None (Spotify was not used)"))
     num_genres = len(set(top_genres)) if top_genres[0] != "None (Spotify was not used)" else 0
+    api_key = settings.OPENAI_KEY_SECRET
+    message_api = [
+        {
+            "role": "system",
+            "content": (
+                "You are a creative assistant that writes personalized and engaging blurbs about fashion styles based on a user's Spotify Wrapped music data."
+            ),
+        },
+        {
+            "role": "user",
+            "content": (
+                f"Write a fashion blurb based on the following Spotify Wrapped data, in 50 words or less:\n\n"
+                f"Top Songs: {', '.join(top_songs)}\n"
+                f"Top Artists: {', '.join(top_artists)}\n"
+                f"Top Genres: {', '.join(top_genres)}\n"
+                f"Number of Distinct Artists: {num_distinct_artists}\n"
+                f"Number of Genres: {num_genres}\n"
+            ),
+        },
 
+    ]
+    client = OpenAI(api_key=api_key)
+
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",  # Replace with "gpt-3.5-turbo" if needed
+        messages=message_api,
+        temperature=0.7,
+        max_tokens=100,
+    )
+
+    response = (response.choices[0].message.content)
     # Save wrap
     wrap = SpotifyWraps.objects.create(
         user_profile=user_profile,
@@ -504,6 +531,7 @@ def create_wrap_for_timeframe(user_profile, timeframe):
         length=timeframe,
         num_distinct_artists=num_distinct_artists,
         num_genres=num_genres,
+        LLM_description=response
     )
     print(f"Created wrap: {wrap}")
     return wrap
