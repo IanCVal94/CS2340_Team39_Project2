@@ -423,7 +423,7 @@ def view_wrap(request, page_num=0, wrap_id=-1):
     top_genres = context.get("top_genres", [])
     num_distinct_artists = context.get("num_distinct_artists", 0)
     num_genres = context.get("num_genres", 0)
-    api_key = "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"
+    api_key = settings.OPENAI_KEY
     message_api = [
         {
             "role": "system",
