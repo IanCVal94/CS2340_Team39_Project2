@@ -416,46 +416,9 @@ def view_wrap(request, page_num=0, wrap_id=-1):
         'num_genres': wrap.num_genres,
         'wrap_index': page_num,
         'wrap_num': wrap.id,
+        'wrap_LLM': wrap.LLM_description
     }
-    spotify_username = context.get("spotify_username", "User")
-    top_songs = context.get("top_songs", [])
-    top_artists = context.get("top_artists", [])
-    top_genres = context.get("top_genres", [])
-    num_distinct_artists = context.get("num_distinct_artists", 0)
-    num_genres = context.get("num_genres", 0)
-    api_key = settings.OPENAI_KEY_SECRET
-    message_api = [
-        {
-            "role": "system",
-            "content": (
-                "You are a creative assistant that writes personalized and engaging blurbs about fashion styles based on a user's Spotify Wrapped music data."
-            ),
-        },
-        {
-            "role": "user",
-            "content": (
-                f"Write a fashion blurb based on the following Spotify Wrapped data:\n\n"
-                f"Spotify Username: {spotify_username}\n"
-                f"Top Songs: {', '.join(top_songs)}\n"
-                f"Top Artists: {', '.join(top_artists)}\n"
-                f"Top Genres: {', '.join(top_genres)}\n"
-                f"Number of Distinct Artists: {num_distinct_artists}\n"
-                f"Number of Genres: {num_genres}\n"
-            ),
-        },
 
-    ]
-    client = OpenAI(api_key=api_key)
-
-
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # Replace with "gpt-3.5-turbo" if needed
-        messages=message_api,
-        temperature=0.7,
-        max_tokens=100,
-    )
-
-    print(response.choices[0].message.content)
 
 
     # Templates for wrap pages
@@ -528,7 +491,37 @@ def create_wrap_for_timeframe(user_profile, timeframe):
 
     num_distinct_artists = len(set(artist for artist in top_artists if artist != "None (Spotify was not used)"))
     num_genres = len(set(top_genres)) if top_genres[0] != "None (Spotify was not used)" else 0
+    api_key = settings.OPENAI_KEY_SECRET
+    message_api = [
+        {
+            "role": "system",
+            "content": (
+                "You are a creative assistant that writes personalized and engaging blurbs about fashion styles based on a user's Spotify Wrapped music data."
+            ),
+        },
+        {
+            "role": "user",
+            "content": (
+                f"Write a fashion blurb based on the following Spotify Wrapped data:\n\n"
+                f"Top Songs: {', '.join(top_songs)}\n"
+                f"Top Artists: {', '.join(top_artists)}\n"
+                f"Top Genres: {', '.join(top_genres)}\n"
+                f"Number of Distinct Artists: {num_distinct_artists}\n"
+                f"Number of Genres: {num_genres}\n"
+            ),
+        },
 
+    ]
+    client = OpenAI(api_key=api_key)
+
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",  # Replace with "gpt-3.5-turbo" if needed
+        messages=message_api,
+        temperature=0.7,
+        max_tokens=100,
+    )
+
+    response = (response.choices[0].message.content)
     # Save wrap
     wrap = SpotifyWraps.objects.create(
         user_profile=user_profile,
@@ -538,6 +531,7 @@ def create_wrap_for_timeframe(user_profile, timeframe):
         length=timeframe,
         num_distinct_artists=num_distinct_artists,
         num_genres=num_genres,
+        LLM_description=response
     )
     print(f"Created wrap: {wrap}")
     return wrap

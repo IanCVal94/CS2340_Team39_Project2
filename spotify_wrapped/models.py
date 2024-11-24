@@ -39,6 +39,7 @@ class SpotifyWraps(models.Model):
     last_5_tracks = models.TextField(blank=True, default="[]")  # Store as JSON string
     last_5_artists = models.TextField(blank=True, default="[]")  # Store as JSON string
     date_time = models.DateTimeField(auto_now_add=True)
+    LLM_description = models.TextField(blank=True, default="[]")
     length = models.CharField(max_length=255, blank=True, null=True)
     num_distinct_artists = models.SmallIntegerField(blank=True, null=True)
     num_genres = models.SmallIntegerField(blank=True, null=True)
