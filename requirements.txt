@@ -9,6 +9,8 @@ coverage
 psycopg2~=2.9.10
 psycopg2-binary
 Pillow
-django-heroku
+django-heroku~=0.3.1
 whitenoise
 # postgresql@14
+openai~=1.55.0
+certifi~=2024.8.30
