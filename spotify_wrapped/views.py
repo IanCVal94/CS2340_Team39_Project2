@@ -502,7 +502,7 @@ def create_wrap_for_timeframe(user_profile, timeframe):
         {
             "role": "user",
             "content": (
-                f"Write a fashion blurb based on the following Spotify Wrapped data:\n\n"
+                f"Write a fashion blurb based on the following Spotify Wrapped data, in 20 words or less:\n\n"
                 f"Top Songs: {', '.join(top_songs)}\n"
                 f"Top Artists: {', '.join(top_artists)}\n"
                 f"Top Genres: {', '.join(top_genres)}\n"
@@ -518,7 +518,7 @@ def create_wrap_for_timeframe(user_profile, timeframe):
         model="gpt-3.5-turbo",  # Replace with "gpt-3.5-turbo" if needed
         messages=message_api,
         temperature=0.7,
-        max_tokens=100,
+        max_tokens=40,
     )
 
     response = (response.choices[0].message.content)
