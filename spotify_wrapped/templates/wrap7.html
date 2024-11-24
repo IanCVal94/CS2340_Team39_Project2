@@ -15,7 +15,11 @@
                         background-color: transparent; /* Optional background color */
                         white-space: normal; /* Ensures text wraps within the box */
                         word-wrap: break-word; /* Breaks long words if needed */
-                        color: #FFF;
+                        {% if request.session.theme == 'light' %}
+                            color: black;
+                        {% else %}
+                            color: #FFF;
+                        {% endif %}
                         font-family: Inter, sans-serif;
                         font-size: 20px;
                         font-style: normal;
@@ -28,11 +32,19 @@
                 </div>
 
             </div>
+        {% if request.session.theme == 'light' %}
+            <img class="wrap-img" src="{% static 'img/wrap-icons/equalizer_black.png' %}" alt="equalizer image">
+        {% else %}
             <img class="wrap-img" src="{% static 'img/wrap-icons/equalizer.png' %}" alt="equalizer image">
+        {% endif %}
         </div>
         <div class="wrap-next-container">
             <a class="wrap-next-final" href="{% url 'wraps_view' %}">{% trans "Back to wraps" %}</a>
+            {% if request.session.theme == 'light' %}
+            <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios_black.png' %}" alt="forward arrow">
+            {% else %}
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
+            {% endif %}
         </div>
     </div>
 

@@ -13,11 +13,19 @@
                     {% endfor %}
                 </div>
             </div>
+        {% if request.session.theme == 'light' %}
+            <img class="wrap-img" src="{% static 'img/wrap-icons/artist_black.png' %}" alt="artist image">
+        {% else %}
             <img class="wrap-img" src="{% static 'img/wrap-icons/artist.png' %}" alt="artist image">
+        {% endif %}
         </div>
         <div class="wrap-next-container">
             <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=3 wrap_id=wrap_num%}">{% trans "Next" %}</a>
+            {% if request.session.theme == 'light' %}
+            <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios_black.png' %}" alt="forward arrow">
+            {% else %}
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
+            {% endif %}
         </div>
     </div>
 

@@ -7,14 +7,22 @@
     <div>
         <div class="index-outer-box">
             <div class="index-left-box">
-                <div class="index-text-box">{% trans "They couldn’t keep you away from listening to songs if they tried" %} + {{ spotify_username }}!</div>
+                <div class="index-text-box">{% trans "They couldn’t keep you away from listening to songs if they tried" %} {{ spotify_username }}!</div>
 
             </div>
+            {% if request.session.theme == 'light' %}
+            <img class="wrap-img" src="{% static 'img/wrap-icons/library_music_black.png' %}" alt="library music image">
+            {% else %}
             <img class="wrap-img" src="{% static 'img/wrap-icons/library_music.png' %}" alt="library music image">
+            {% endif %}
         </div>
         <div class="wrap-next-container">
             <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=4 wrap_id=wrap_num%}">{% trans "Next" %}</a>
+            {% if request.session.theme == 'light' %}
+            <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios_black.png' %}" alt="forward arrow">
+            {% else %}
             <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
+            {% endif %}
         </div>
     </div>
 
