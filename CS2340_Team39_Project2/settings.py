@@ -31,7 +31,7 @@ load_dotenv()
 # Spotify Credentials
 SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
 SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
-
+OPENAI_KEY_SECRET = os.getenv('OPENAI_KEY')
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',

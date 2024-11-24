@@ -6,7 +6,24 @@
     <div>
         <div class="index-outer-box">
             <div class="index-left-box">
-                <div class="index-text-box">Thanks for listening!</div>
+                <div class="index-text-box">Thanks for listening! For some extra fun, here's what we think you dress like based on your music taste!</div>
+                <div
+                    style="
+                        padding: 15px; /* Optional padding */
+                        background-color: transparent; /* Optional background color */
+                        white-space: normal; /* Ensures text wraps within the box */
+                        word-wrap: break-word; /* Breaks long words if needed */
+                        color: #FFF;
+                        font-family: Inter, sans-serif;
+                        font-size: 20px;
+                        font-style: normal;
+                        font-weight: 500;
+                        line-height: normal;
+                        width: 80%;
+                    "
+                >
+                    {{ wrap_LLM }}
+                </div>
 
             </div>
             <img class="wrap-img" src="{% static 'img/wrap-icons/equalizer.png' %}" alt="equalizer image">
