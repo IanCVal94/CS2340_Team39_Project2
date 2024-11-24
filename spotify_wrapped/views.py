@@ -7,7 +7,7 @@ import base64
 import urllib.parse
 from datetime import timedelta
 import json
-from openai import OpenAI
+
 import requests
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
