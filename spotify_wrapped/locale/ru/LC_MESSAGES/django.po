@@ -241,6 +241,9 @@ msgstr "Вы были очень разнообразны за"
 msgid "Thanks for listening! For some extra fun, here's what we think you dress like based on your music taste!"
 msgstr "Спасибо, что слушали! Для дополнительного веселья вот наше мнение о том, как вы одеваетесь на основе вашего музыкального вкуса!"
 
+msgid "None (Spotify was not used during the time interval selected)"
+msgstr "Нет данных (Spotify не использовался в выбранном временном интервале)"
+
 
 
 

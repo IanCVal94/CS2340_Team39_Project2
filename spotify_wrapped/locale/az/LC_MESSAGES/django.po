@@ -239,5 +239,8 @@ msgstr "Çox müxtəlif olmuşsunuz keçmiş ay ərzində"
 msgid "Thanks for listening! For some extra fun, here's what we think you dress like based on your music taste!"
 msgstr "Dinlədiyiniz üçün təşəkkürlər! Əyləncəni bir az da artırmaq üçün, musiqi zövqünüzə əsasən necə geyindiyiniz barədə fikrimizi təqdim edirik!"
 
+msgid "None (Spotify was not used during the time interval selected)"
+msgstr "Heç biri (Seçilmiş zaman intervalında Spotify istifadə edilməyib)"
+
 
 
