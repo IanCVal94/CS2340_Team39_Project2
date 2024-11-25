@@ -28,12 +28,13 @@
                         width: 80%;
                     "
                 >
-                    {% if request.session.language == "az" %}
-                        {{ wrap.LLM_description_az }}
-                    {% elif request.session.language == "ru" %}
-                        {{ wrap.LLM_description_ru }}
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% if LANGUAGE_CODE == "az" %}
+                        {{ wrap_LLM_az }}
+                    {% elif LANGUAGE_CODE == "ru" %}
+                        {{ wrap_LLM_ru }}
                     {% else %}
-                        {{ wrap.LLM_description_en }}
+                        {{ wrap_LLM_en }}
                     {% endif %}
                 </div>
 

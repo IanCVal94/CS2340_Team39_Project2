@@ -523,7 +523,7 @@ def create_wrap_for_timeframe(user_profile, timeframe):
     for lang in languages:
         translated_message = message_template.copy()
         if lang != "en":
-            translated_message[-1]["content"] += f" Translate this blurb into {languages[lang]}."
+            translated_message[-1]["content"] += f" and write it in {languages[lang]}."
 
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -532,7 +532,9 @@ def create_wrap_for_timeframe(user_profile, timeframe):
             max_tokens=100,
         )
         translations[lang] = response.choices[0].message.content.strip()
-
+    print(f"Created wrap: {translations["en"]}")
+    print(f"Created wrap: {translations["az"]}")
+    print(f"Created wrap: {translations["ru"]}")
     # Save wrap
     wrap = SpotifyWraps.objects.create(
         user_profile=user_profile,
@@ -575,6 +577,22 @@ def delete_account(request):
         return redirect('settings_view')
 
 def set_theme(request, theme_name):
+    """
+    Updates the user's selected theme and stores it in the session.
+
+    This function allows users to change the appearance of the application
+    by selecting a predefined theme. The selected theme is stored in the session
+    and applied across the application.
+
+    Args:
+        request (HttpRequest): The HTTP request object that includes session data.
+        theme_name (str): The name of the theme to be applied. Must be one of
+                          ['holiday', 'dark', 'light'].
+
+    Returns:
+        HttpResponseRedirect: Redirects the user to the 'index' page after
+                              updating the theme.
+    """
     if theme_name in ['holiday', 'dark', 'light']:
         request.session['theme'] = theme_name
     return redirect('index')
