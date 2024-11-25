@@ -145,7 +145,7 @@ msgstr "Son vaxtlar çox sayda musiqiçiləri dinləmisiniz"
 #: spotify_wrapped/templates/wrap4.html:19
 #: spotify_wrapped/templates/wrap_base.html:18
 msgid "Next"
-msgstr "Növbəti"
+msgstr "Növbə"
 
 #: spotify_wrapped/templates/wrap2.html:10
 msgid "Here are your top 5 artists:"
@@ -220,6 +220,24 @@ msgstr "1 İl"
 
 msgid "5 Years"
 msgstr "5 İl"
+
+msgid "1 month"
+msgstr "1 ay"
+
+msgid "1 year"
+msgstr "1 il"
+
+msgid "5 years"
+msgstr "5 il"
+
+msgid "You’re about to discover your music taste for the past"
+msgstr "Son dövrlərdəki musiqi zövqünüzü kəşf etməyə hazırlaşırsınız"
+
+msgid "You have been very diverse over the past"
+msgstr "Çox müxtəlif olmuşsunuz keçmiş ay ərzində"
+
+msgid "Thanks for listening! For some extra fun, here's what we think you dress like based on your music taste!"
+msgstr "Dinlədiyiniz üçün təşəkkürlər! Əyləncəni bir az da artırmaq üçün, musiqi zövqünüzə əsasən necə geyindiyiniz barədə fikrimizi təqdim edirik!"
 
 
 

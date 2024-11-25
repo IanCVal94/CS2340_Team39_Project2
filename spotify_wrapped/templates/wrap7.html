@@ -8,7 +8,23 @@
         <div class="index-outer-box">
             <div class="index-left-box">
                 <div class="index-text-box">{% trans "Thanks for listening!" %}</div>
-                <div class="index-text-box">Thanks for listening! For some extra fun, here's what we think you dress like based on your music taste!</div>
+                <div style="
+                    padding: 15px;
+                    background-color: transparent;
+                    white-space: normal;
+                    word-wrap: break-word;
+                    {% if request.session.theme == 'light' %}
+                    color: black;
+                    {% else %}
+                    color: #FFF;
+                    {% endif %}
+                    font-family: Inter, sans-serif;
+                    font-size: 36px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: normal;
+                    width: 80%;
+                    " class="index-text-box-last">{% trans "Thanks for listening! For some extra fun, here's what we think you dress like based on your music taste!" %}</div>
                 <div
                     style="
                         padding: 15px; /* Optional padding */
@@ -56,6 +72,22 @@
     </div>
 
 
-<a href="{% url 'contact' %}" class="meet-team-button"></a>
+    {% if request.session.theme == 'light' %}
+    <a href="{% url 'contact' %}" style="
+        position: fixed;
+        bottom: 3%;
+        left: 4%;
+        width: 230px;
+        height: 75px;
+        background-image: url({% static 'img/footer-icon-light.svg' %});
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    "></a>
+    {% else %}
+    <a href="{% url 'contact' %}" class="meet-team-button"></a>
+    {% endif %}
 
 {% endblock %}

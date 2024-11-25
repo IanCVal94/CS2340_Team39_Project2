@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}Wraps{% endblock %}
 
@@ -38,7 +39,23 @@
         {% endfor %}
     </div>
 
+    {% if request.session.theme == 'light' %}
+    <a href="{% url 'contact' %}" style="
+        position: fixed;
+        bottom: 3%;
+        left: 4%;
+        width: 230px;
+        height: 75px;
+        background-image: url({% static 'img/footer-icon-light.svg' %});
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    "></a>
+    {% else %}
     <a href="{% url 'contact' %}" class="meet-team-button"></a>
+    {% endif %}
 </div>
 
 <script>

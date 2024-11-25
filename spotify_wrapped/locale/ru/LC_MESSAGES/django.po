@@ -203,7 +203,7 @@ msgstr "Последние 5 лет"
 
 #: spotify_wrapped/templates/wraps.html:28
 msgid "View"
-msgstr "Просмотр"
+msgstr "Смотри"
 
 msgid "My Saved Wraps"
 msgstr "Мои сохраненные обертки"
@@ -222,6 +222,25 @@ msgstr "1 год"
 
 msgid "5 Years"
 msgstr "5 лет"
+
+msgid "1 month"
+msgstr "1 месяц"
+
+msgid "1 year"
+msgstr "1 год"
+
+msgid "5 years"
+msgstr "5 лет"
+
+msgid "You’re about to discover your music taste for the past"
+msgstr "Вы собираетесь узнать о своем музыкальном вкусе за последнее"
+
+msgid "You have been very diverse over the past"
+msgstr "Вы были очень разнообразны за"
+
+msgid "Thanks for listening! For some extra fun, here's what we think you dress like based on your music taste!"
+msgstr "Спасибо, что слушали! Для дополнительного веселья вот наше мнение о том, как вы одеваетесь на основе вашего музыкального вкуса!"
+
 
 
 

@@ -38,6 +38,20 @@ h2 {
     cursor: pointer;
 }
 
+.meet-team-button-light {
+    position: fixed;
+    bottom: 3%;
+    left: 4%;
+    width: 230px;
+    height: 75px;
+    background-image: url("../img/footer-icon-light.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
 .index-text-box {
     padding: 15px; /* Optional padding */
     background-color: transparent; /* Optional background color */
@@ -48,6 +62,20 @@ h2 {
     font-size: 48px;
     font-style: normal;
     font-weight: 600;
+    line-height: normal;
+    width: 80%;
+}
+
+.index-text-box-last {
+    padding: 15px;
+    background-color: transparent;
+    white-space: normal;
+    word-wrap: break-word;
+    color: #FFF;
+    font-family: Inter, sans-serif;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 500;
     line-height: normal;
     width: 80%;
 }
