@@ -101,10 +101,10 @@ WSGI_APPLICATION = 'CS2340_Team39_Project2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd92te5m8mkvnap',
-        'USER': 'u9apbkarf0h4hn',
-        'PASSWORD': 'p99571c58e4571cdef23e891d0acc572b315ffa184fd0e921e3559b6737bf6673',
-        'HOST': 'c97r84s7psuajm.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
+        'NAME': 'dflv8lm2kb322k',
+        'USER': 'uamnb8ffd1ghc3',
+        'PASSWORD': 'p5c30663591a8c49b718272440a7b744b818a432b1f1e0f3f52c28a975e573eef',
+        'HOST': 'c8m0261h0c7idk.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
     }
 }

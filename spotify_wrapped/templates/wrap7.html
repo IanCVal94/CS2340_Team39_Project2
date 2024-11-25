@@ -28,7 +28,13 @@
                         width: 80%;
                     "
                 >
-                    {{ wrap_LLM }}
+                    {% if request.session.language == "az" %}
+                        {{ wrap.LLM_description_az }}
+                    {% elif request.session.language == "ru" %}
+                        {{ wrap.LLM_description_ru }}
+                    {% else %}
+                        {{ wrap.LLM_description_en }}
+                    {% endif %}
                 </div>
 
             </div>

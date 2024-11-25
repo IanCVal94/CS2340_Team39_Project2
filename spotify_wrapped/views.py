@@ -416,7 +416,9 @@ def view_wrap(request, page_num=0, wrap_id=-1):
         'num_genres': wrap.num_genres,
         'wrap_index': page_num,
         'wrap_num': wrap.id,
-        'wrap_LLM': wrap.LLM_description
+        'wrap_LLM_en': wrap.LLM_description_en,
+        'wrap_LLM_az': wrap.LLM_description_az,
+        'wrap_LLM_ru': wrap.LLM_description_ru,
     }
 
 
@@ -492,12 +494,10 @@ def create_wrap_for_timeframe(user_profile, timeframe):
     num_distinct_artists = len(set(artist for artist in top_artists if artist != "None (Spotify was not used)"))
     num_genres = len(set(top_genres)) if top_genres[0] != "None (Spotify was not used)" else 0
     api_key = settings.OPENAI_KEY_SECRET
-    message_api = [
+    message_template = [
         {
             "role": "system",
-            "content": (
-                "You are a creative assistant that writes personalized and engaging blurbs about fashion styles based on a user's Spotify Wrapped music data."
-            ),
+            "content": "You are a creative assistant that writes personalized and engaging blurbs about fashion styles based on a user's Spotify Wrapped music data."
         },
         {
             "role": "user",
@@ -509,19 +509,30 @@ def create_wrap_for_timeframe(user_profile, timeframe):
                 f"Number of Distinct Artists: {num_distinct_artists}\n"
                 f"Number of Genres: {num_genres}\n"
             ),
-        },
-
+        }
     ]
+
     client = OpenAI(api_key=api_key)
+    translations = {}
+    languages = {
+        "en": "English",
+        "az": "Azerbaijani",
+        "ru": "Russian"
+    }
 
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # Replace with "gpt-3.5-turbo" if needed
-        messages=message_api,
-        temperature=0.7,
-        max_tokens=100,
-    )
+    for lang in languages:
+        translated_message = message_template.copy()
+        if lang != "en":
+            translated_message[-1]["content"] += f" Translate this blurb into {languages[lang]}."
 
-    response = (response.choices[0].message.content)
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=translated_message,
+            temperature=0.7,
+            max_tokens=100,
+        )
+        translations[lang] = response.choices[0].message.content.strip()
+
     # Save wrap
     wrap = SpotifyWraps.objects.create(
         user_profile=user_profile,
@@ -531,7 +542,9 @@ def create_wrap_for_timeframe(user_profile, timeframe):
         length=timeframe,
         num_distinct_artists=num_distinct_artists,
         num_genres=num_genres,
-        LLM_description=response
+        LLM_description_en=translations["en"],
+        LLM_description_az=translations["az"],
+        LLM_description_ru=translations["ru"]
     )
     print(f"Created wrap: {wrap}")
     return wrap
