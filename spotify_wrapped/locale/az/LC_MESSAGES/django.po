@@ -242,5 +242,11 @@ msgstr "Dinlədiyiniz üçün təşəkkürlər! Əyləncəni bir az da artırmaq
 msgid "None (Spotify was not used during the time interval selected)"
 msgstr "Heç biri (Seçilmiş zaman intervalında Spotify istifadə edilməyib)"
 
+msgid "Subject"
+msgstr "Mövzu"
+
+msgid "Message"
+msgstr "Mesaj"
+
 
 

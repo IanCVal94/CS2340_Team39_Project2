@@ -9,7 +9,7 @@
             <div class="index-left-box">
                 <div class="index-text-box">{% trans "Here are your top 5 genres:" %} <br>
                     {% for genre in top_genres %}
-                        {{ forloop.counter }}. {{ genre }} <br>
+                        {{ forloop.counter }}. {% blocktrans %} {{ genre }} {% endblocktrans %}<br>
                     {% endfor %}
                 </div>
 

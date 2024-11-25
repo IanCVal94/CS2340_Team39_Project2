@@ -48,12 +48,12 @@
             {% csrf_token %}
 
             <div class="input-group">
-                <input type="text" name="subject" placeholder="Subject" required>
+                <input type="text" name="subject" placeholder="{% trans 'Subject' %}" required>
                 <button type="submit">{% trans "Send" %}</button>
             </div>
 
             <div class="input-group">
-                <textarea name="message" placeholder="Message" required></textarea>
+                <textarea name="message" placeholder="{% trans 'Message' %}" required></textarea>
             </div>
 
             <p>{{ result }}</p>

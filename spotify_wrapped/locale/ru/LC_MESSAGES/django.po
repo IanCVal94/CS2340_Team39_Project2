@@ -244,6 +244,11 @@ msgstr "Спасибо, что слушали! Для дополнительно
 msgid "None (Spotify was not used during the time interval selected)"
 msgstr "Нет данных (Spotify не использовался в выбранном временном интервале)"
 
+msgid "Subject"
+msgstr "Тема"
+
+msgid "Message"
+msgstr "Сообщение"
 
 
 

@@ -27,7 +27,15 @@
                 {% with wrap.date_time|date:"F j, Y, g:i a" as formatted_date %}
                 {% with wrap.length as length %}
                 <div class="label">
-                    {% blocktrans %}{{ length }} - Created {{ formatted_date }}{% endblocktrans %}
+                    {% if length == '1 month' %}
+                        {% trans '1 month' %}
+                    {% elif length == '1 year' %}
+                        {% trans '1 year' %}
+                    {% else %}
+                        {% trans '5 years' %}
+                    {% endif %}
+                    - {% trans 'Created' %}
+                    {% blocktrans %}{{ formatted_date }}{% endblocktrans %}
                 </div>
                 {% endwith %}
                 {% endwith %}
