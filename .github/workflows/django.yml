@@ -36,10 +36,10 @@ jobs:
         pip install pylint
         pylint --ignore=spotify_wrapped/migrations spotify_wrapped/ --exit-zero
 
-    #- name: Run tests with coverage
-      #run: |
-        #source venv/bin/activate
-        #pip install pytest coverage
-        #coverage run -m pytest
-        #coverage report --fail-under=80
+    - name: Run tests with coverage
+      run: |
+        source venv/bin/activate
+        pip install pytest coverage
+        coverage run -m pytest
+        coverage report --fail-under=80
         

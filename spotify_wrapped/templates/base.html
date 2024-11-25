@@ -1,23 +1,93 @@
+{% load i18n %}
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Spotify Wrapper{% endblock %}</title>
-</head>
-<body>
-    <nav>
-    <a href="{% url 'index' %}">Home</a>
-    {% if user.is_authenticated %}
-        <a href="{% url 'profile' %}">Profile</a>
-        <a href="{% url 'logout' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'login' %}">Login</a>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% if request.session.theme == 'light' %}
+        <link rel="stylesheet" href="{% static 'css/light.css' %}">
+    {% elif request.session.theme == 'dark' %}
+        <link rel="stylesheet" href="{% static 'css/dark.css' %}">
     {% endif %}
-    <a href="{% url 'contact' %}">Contact The Team</a>
-</nav>
 
-    <div>
+    <style>
+        body {
+        {% if request.session.theme == 'light' %}
+            background-color: white;
+        {% else %}
+            background-color: #0D0D0D;
+        {% endif %}
+            height: 100vh;
+        {% if request.session.theme == 'holiday' %}
+            background-image: url('{% static "img/background/Holiday.png" %}');
+        {% else %}
+            background-image: url('{% static "img/background/Normal.png" %}');
+        {% endif %}
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 130%;
+        }
+
+        nav {
+        {% if request.session.theme == 'light' %}
+            background-color: white;
+        {% else %}
+            background-color: rgba(0, 0, 0, 0.64);
+        {% endif %}
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+            font-family: Inter, sans-serif;
+        }
+
+        .username {
+            font-family: Inter, sans-serif;
+            font-size: 17.5px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+        }
+
+        .name-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .spotify-logo {
+            width: 32px;
+            height: 32px;
+            margin-left: 10px;
+        }
+    </style>
+
+</head>
+<body class="main-body">
+    <nav class="navbar">
+        <a class="title" href="{% url 'index' %}">{% trans "Your Autumn Anthem" %}</a>
+        {% if user.is_authenticated %}
+            <div class="name-container">
+                <a class="username" href="{% url 'settings' %}">{{ spotify_username }}</a>
+                <a href="{% url 'settings' %}">
+                    <img class="spotify-logo" src="{% static 'img/spotify_logo.png' %}" alt="spotify logo">
+                </a>
+            </div>
+        {% endif %}
+    </nav>
+
+    <div class="content">
         {% block content %}{% endblock %}
     </div>
 </body>

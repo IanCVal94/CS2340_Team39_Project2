@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+
+    <div>
+        <div class="index-outer-box">
+            <div class="index-left-box">
+                <div class="index-text-box">
+                    {% trans "You have been very diverse over the past" %}
+                    {% if length == '1 month' %}
+                    {% trans "1 month" %}
+                    {% elif length == '1 year' %}
+                    {% trans "1 year" %}
+                    {% else %}
+                    {% trans "5 years" %}
+                    {% endif %}, {{ spotify_username }}!
+                </div>
+            </div>
+        {% if request.session.theme == 'light' %}
+            <img class="wrap-img" src="{% static 'img/wrap-icons/radio_black.png' %}" alt="radio image">
+        {% else %}
+            <img class="wrap-img" src="{% static 'img/wrap-icons/radio.png' %}" alt="radio image">
+        {% endif %}
+        </div>
+        <div class="wrap-next-container">
+            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=6 wrap_id=wrap_num%}">Next</a>
+            {% if request.session.theme == 'light' %}
+            <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios_black.png' %}" alt="forward arrow">
+            {% else %}
+            <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
+            {% endif %}
+        </div>
+    </div>
+
+
+    {% if request.session.theme == 'light' %}
+    <a href="{% url 'contact' %}" style="
+        position: fixed;
+        bottom: 3%;
+        left: 4%;
+        width: 230px;
+        height: 75px;
+        background-image: url({% static 'img/footer-icon-light.svg' %});
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    "></a>
+    {% else %}
+    <a href="{% url 'contact' %}" class="meet-team-button"></a>
+    {% endif %}
+
+{% endblock %}

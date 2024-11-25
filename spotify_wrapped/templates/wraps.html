@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Wraps{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <h2>{% trans "Create an Autumn Anthem" %}</h2>
+    <div class="create-wrap-row">
+        <button class="button halloween" onclick="location.href='/wraps/0/?timeframe=1%20month';">{% trans "Past 1 Month" %}</button>
+        <button class="button dark" onclick="location.href='/wraps/0/?timeframe=1%20year';">{% trans "Past 1 Year" %}</button>
+        <button class="button light" onclick="location.href='/wraps/0/?timeframe=5%20years';">{% trans "Past 5 Years" %}</button>
+    </div>
+
+{#    <h2>My Autumn Anthems</h2>#}
+{#    <div class="manage-wrap-row">#}
+{#        <div class="label">Past 3 Months - Created Oct 30th, 1:32pm</div>#}
+{#        <button class="button logout">View</button>#}
+{#        <button class="button delete">Delete</button>#}
+{#    </div>#}
+
+    <h2>{% trans "My Saved Wraps" %}</h2>
+    <div class="saved-wraps">
+        {% for wrap in all_wraps %}
+            <div class="manage-wrap-row">
+                {% with wrap.date_time|date:"F j, Y, g:i a" as formatted_date %}
+                {% with wrap.length as length %}
+                <div class="label">
+                    {% if length == '1 month' %}
+                        {% trans '1 month' %}
+                    {% elif length == '1 year' %}
+                        {% trans '1 year' %}
+                    {% else %}
+                        {% trans '5 years' %}
+                    {% endif %}
+                    - {% trans 'Created' %}
+                    {% blocktrans %}{{ formatted_date }}{% endblocktrans %}
+                </div>
+                {% endwith %}
+                {% endwith %}
+                <form action="{% url 'view_wrap_with_id' page_num=0 wrap_id=wrap.id  %}" method="get">
+                    <button class="button logout" type="submit">{% trans "View" %}</button>
+                </form>
+                <button class="button delete" onclick="deleteWrap({{ wrap.id }});">{% trans "Delete" %}</button>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if request.session.theme == 'light' %}
+    <a href="{% url 'contact' %}" style="
+        position: fixed;
+        bottom: 3%;
+        left: 4%;
+        width: 230px;
+        height: 75px;
+        background-image: url({% static 'img/footer-icon-light.svg' %});
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    "></a>
+    {% else %}
+    <a href="{% url 'contact' %}" class="meet-team-button"></a>
+    {% endif %}
+</div>
+
+<script>
+    /**
+     * deleteWrap - Brief description of the function.
+     * @param {type} wrapId - Description of wrapId.
+     * @returns {type} Description of the return value.
+     */
+    function deleteWrap(wrapId) {
+        fetch(`/wraps/delete/${wrapId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message);
+                location.reload();  // Reload page to update wraps list
+            }
+        })
+        .catch(error => console.error("Error deleting wrap:", error));
+    }
+</script>
+{% endblock %}
+
+
+{#{% block title %}Wraps{% endblock %}#}
+{##}
+{#{% block content %}#}
+{##}
+{#<h2>Top 5 Recent Songs</h2>#}
+{##}
+{#<ol>#}
+{#    {% for track in top_five %}#}
+{#        <li>"{{ track.name }}", by {{ track.artist }}</li>#}
+{#    {% endfor %}#}
+{#</ol>#}
+{##}
+{#<h2>Top 5 Long-term Genres</h2>#}
+{##}
+{#<ol>#}
+{#    {% for genre in top_genres %}#}
+{#        <li>{{ genre }}</li>#}
+{#    {% endfor %}#}
+{#</ol>#}
+{##}
+{#{% endblock %}#}

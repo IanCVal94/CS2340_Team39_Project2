@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+    <div class="settings-container">
+        <h2>{% trans "Settings" %}</h2>
+        <div class="settings-row">
+            <div class="label">{% trans "Account" %}</div>
+            <button class="button logout" onclick="window.location.href={% url 'logout' %}">{% trans "Logout" %}</button>
+            <button class="button delete" onclick="window.location.href='{% url 'delete_account' %}'">{% trans "Delete" %}</button>
+        </div>
+        <div class="settings-row">
+            <div class="label">{% trans "Theme" %}</div>
+            <button class="button halloween" onclick="window.location.href='{% url 'set_theme' 'holiday' %}'">{% trans "Halloween" %}</button>
+            <button class="button dark" onclick="window.location.href='{% url 'set_theme' 'dark' %}'">{% trans "Dark" %}</button>
+            <button class="button light" onclick="window.location.href='{% url 'set_theme' 'light' %}'">{% trans "Light" %}</button>
+        </div>
+        <form action="{% url 'set_language' %}" method="post">
+        <div class="settings-row">
+            <div class="label">{% trans "Language" %}</div>
+                {% csrf_token %}
+                <button type="submit" name="language" value="en" class="button english">{% trans "English" %}</button>
+                <button type="submit" name="language" value="az" class="button azerbaijani">{% trans "Azerbaijani" %}</button>
+                <button type="submit" name="language" value="ru" class="button russian">{% trans "Russian" %}</button>
+        </div>
+        </form>
+    </div>
+
+    {% if request.session.theme == 'light' %}
+    <a href="{% url 'contact' %}" style="
+        position: fixed;
+        bottom: 3%;
+        left: 4%;
+        width: 230px;
+        height: 75px;
+        background-image: url({% static 'img/footer-icon-light.svg' %});
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+    "></a>
+    {% else %}
+    <a href="{% url 'contact' %}" class="meet-team-button"></a>
+    {% endif %}
+{% endblock %}

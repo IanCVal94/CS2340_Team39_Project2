@@ -1,0 +1,252 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-21 15:47-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: spotify_wrapped/templates/base.html:79
+msgid "Your Autumn Anthem"
+msgstr "Payız Himniniz"
+
+#: spotify_wrapped/templates/contact.html:11
+msgid "Meet the Development Team"
+msgstr "İnkişaf Komandası ilə Tanış Olun"
+
+#: spotify_wrapped/templates/contact.html:12
+msgid ""
+"We are Team 39 from CS 2340, dedicated to building user-friendly and robust "
+"applications. Our team is composed of:"
+msgstr "Biz CS 2340-dan Komanda 39 olaraq, istifadəçi dostu və etibarlı tətbiqlər yaratmağa həsr olunmuşuq. Komandamızın tərkibi belədir:"
+
+#: spotify_wrapped/templates/contact.html:18
+msgid "Frontend Developer"
+msgstr "Frontend İnkişaf etdiricisi"
+
+#: spotify_wrapped/templates/contact.html:23
+#: spotify_wrapped/templates/contact.html:33
+msgid "Backend Developer"
+msgstr "Backend İnkişaf etdiricisi"
+
+#: spotify_wrapped/templates/contact.html:28
+msgid "Full-Stack Developer and Product Owner"
+msgstr "Tam Şəkilli İnkişaf etdirici və Məhsul Sahibi"
+
+#: spotify_wrapped/templates/contact.html:38
+msgid "Full-Stack Developer and Scrum Master"
+msgstr "Tam Şəkilli İnkişaf etdirici və Scrum Master"
+
+#: spotify_wrapped/templates/contact.html:45
+msgid "Send Us Your Feedback"
+msgstr "Bizə Öz Rəyinizi Göndərin"
+
+#: spotify_wrapped/templates/contact.html:52
+msgid "Send"
+msgstr "Göndər"
+
+#: spotify_wrapped/templates/index.html:11
+msgid "Connect your Spotify account this Fall to reveal your spooky taste."
+msgstr "Bu payız Spotify hesabınızı qoşaraq qorxunc zövqünüzü ortaya çıxarın."
+
+#: spotify_wrapped/templates/index.html:13
+msgid "See My Taste"
+msgstr "Zövqümü Göstər"
+
+#: spotify_wrapped/templates/index.html:15
+msgid "Sign into Spotify"
+msgstr "Spotify-a Daxil Olun"
+
+#: spotify_wrapped/templates/login.html:7
+msgid "Login with Spotify"
+msgstr "Spotify ilə Daxil Ol"
+
+#: spotify_wrapped/templates/login.html:8
+msgid "Spotify Login"
+msgstr "Spotify Daxili"
+
+#: spotify_wrapped/templates/logout_redirect.html:6
+msgid "You are being redirected to Spotify log out page..."
+msgstr "Spotify-dan çıxış səhifəsinə yönləndirilirsiniz..."
+
+#: spotify_wrapped/templates/profile.html:7
+msgid "Your Profile"
+msgstr "Profiliniz"
+
+#: spotify_wrapped/templates/profile.html:10
+#: spotify_wrapped/templates/settings.html:11
+msgid "Logout"
+msgstr "Çıxış"
+
+#: spotify_wrapped/templates/settings.html:8
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: spotify_wrapped/templates/settings.html:10
+msgid "Account"
+msgstr "Hesab"
+
+#: spotify_wrapped/templates/settings.html:12
+#: spotify_wrapped/templates/wraps.html:30
+msgid "Delete"
+msgstr "Sil"
+
+#: spotify_wrapped/templates/settings.html:15
+msgid "Theme"
+msgstr "Tema"
+
+#: spotify_wrapped/templates/settings.html:16
+msgid "Halloween"
+msgstr "Hellouin"
+
+#: spotify_wrapped/templates/settings.html:17
+msgid "Dark"
+msgstr "Qaranlıq"
+
+#: spotify_wrapped/templates/settings.html:18
+msgid "Light"
+msgstr "İşıq"
+
+#: spotify_wrapped/templates/settings.html:22
+msgid "Language"
+msgstr "Dil"
+
+#: spotify_wrapped/templates/settings.html:24
+msgid "English"
+msgstr "İngilis"
+
+#: spotify_wrapped/templates/settings.html:25
+msgid "Azerbaijani"
+msgstr "Azərbaycanca"
+
+#: spotify_wrapped/templates/settings.html:26
+msgid "Russian"
+msgstr "Rus"
+
+#: spotify_wrapped/templates/wrap1.html:10
+msgid "You listened to a lot of artists over the past"
+msgstr "Son vaxtlar çox sayda musiqiçiləri dinləmisiniz"
+
+#: spotify_wrapped/templates/wrap1.html:16
+#: spotify_wrapped/templates/wrap2.html:19
+#: spotify_wrapped/templates/wrap3.html:16
+#: spotify_wrapped/templates/wrap4.html:19
+#: spotify_wrapped/templates/wrap_base.html:18
+msgid "Next"
+msgstr "Növbə"
+
+#: spotify_wrapped/templates/wrap2.html:10
+msgid "Here are your top 5 artists:"
+msgstr "Budur ən yaxşı 5 musiqiçiniz:"
+
+#: spotify_wrapped/templates/wrap3.html:10
+msgid "They couldn’t keep you away from listening to songs if they tried"
+msgstr "Onlar sizi mahnıları dinləməkdən uzaqlaşdıra bilməzdilər"
+
+#: spotify_wrapped/templates/wrap4.html:10
+msgid "Here are your top 5 songs:"
+msgstr "Budur ən yaxşı 5 mahnınız:"
+
+#: spotify_wrapped/templates/wrap5.html:10
+msgid ""
+"You have been very diverse over the past {{ length }}, "
+"{{ spotify_username }}!"
+msgstr "Son {{ length }} müddətində çox müxtəlif olmuşsunuz, {{ spotify_username }}!"
+
+#: spotify_wrapped/templates/wrap6.html:10
+msgid "Here are your top 5 genres:"
+msgstr "Budur ən yaxşı 5 janrınız:"
+
+#: spotify_wrapped/templates/wrap7.html:10
+msgid "Thanks for listening!"
+msgstr "Dinlədiyiniz üçün təşəkkür edirik!"
+
+#: spotify_wrapped/templates/wrap7.html:16
+msgid "Back to wraps"
+msgstr "Wraps səhifəsinə qayıt"
+
+#: spotify_wrapped/templates/wrap_base.html:12
+msgid ""
+"You’re about to discover your music taste for the past {{ length }}, "
+"{{ spotify_username }}"
+msgstr "Son {{ length }} müddət ərzində musiqi zövqünüzü kəşf etməyə hazırsınız, {{ spotify_username }}!"
+
+#: spotify_wrapped/templates/wraps.html:8
+msgid "Create an Autumn Anthem"
+msgstr "Payız Himninizi Yaradın"
+
+#: spotify_wrapped/templates/wraps.html:10
+msgid "Past 1 Month"
+msgstr "Son 1 Ay"
+
+#: spotify_wrapped/templates/wraps.html:11
+msgid "Past 1 Year"
+msgstr "Son 1 İl"
+
+#: spotify_wrapped/templates/wraps.html:12
+msgid "Past 5 Years"
+msgstr "Son 5 İl"
+
+#: spotify_wrapped/templates/wraps.html:28
+msgid "View"
+msgstr "Bax"
+
+msgid "My Saved Wraps"
+msgstr "Mənim Saxlanılan Wrap-larım"
+
+msgid "{{ length }} - Created {{ formatted_date }}"
+msgstr "{{ length }} - Yaradılıb {{ formatted_date }}"
+
+msgid "Created"
+msgstr "Yaradılıb"
+
+msgid "1 Month"
+msgstr "1 Ay"
+
+msgid "1 Year"
+msgstr "1 İl"
+
+msgid "5 Years"
+msgstr "5 İl"
+
+msgid "1 month"
+msgstr "1 ay"
+
+msgid "1 year"
+msgstr "1 il"
+
+msgid "5 years"
+msgstr "5 il"
+
+msgid "You’re about to discover your music taste for the past"
+msgstr "Son dövrlərdəki musiqi zövqünüzü kəşf etməyə hazırlaşırsınız"
+
+msgid "You have been very diverse over the past"
+msgstr "Çox müxtəlif olmuşsunuz keçmiş ay ərzində"
+
+msgid "Thanks for listening! For some extra fun, here's what we think you dress like based on your music taste!"
+msgstr "Dinlədiyiniz üçün təşəkkürlər! Əyləncəni bir az da artırmaq üçün, musiqi zövqünüzə əsasən necə geyindiyiniz barədə fikrimizi təqdim edirik!"
+
+msgid "None (Spotify was not used during the time interval selected)"
+msgstr "Heç biri (Seçilmiş zaman intervalında Spotify istifadə edilməyib)"
+
+msgid "Subject"
+msgstr "Mövzu"
+
+msgid "Message"
+msgstr "Mesaj"
+
+
+

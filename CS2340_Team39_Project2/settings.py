@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+
+import certifi
+import django_heroku
 from decouple import config
 from django.contrib import staticfiles
 
@@ -21,7 +24,6 @@ DEBUG = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
 # Load environment variables
 from dotenv import load_dotenv
 load_dotenv()
@@ -29,12 +31,16 @@ load_dotenv()
 # Spotify Credentials
 SPOTIFY_CLIENT_ID = os.getenv('SPOTIFY_CLIENT_ID')
 SPOTIFY_CLIENT_SECRET = os.getenv('SPOTIFY_CLIENT_SECRET')
-SPOTIFY_REDIRECT_URI='http://localhost:8000/spotify/callback/'
-
+OPENAI_KEY_SECRET = os.getenv('OPENAI_KEY')
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'spotify2340group39wrapped-5837b7a20855.herokuapp.com'
+    'cs2340-group39-spotifywrapped-487f1de3fd57.herokuapp.com'
+]
+
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
 ]
 
 
@@ -53,6 +59,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -84,13 +91,23 @@ WSGI_APPLICATION = 'CS2340_Team39_Project2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dflv8lm2kb322k',
+        'USER': 'uamnb8ffd1ghc3',
+        'PASSWORD': 'p5c30663591a8c49b718272440a7b744b818a432b1f1e0f3f52c28a975e573eef',
+        'HOST': 'c8m0261h0c7idk.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -116,25 +133,32 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'EST'
 
 USE_I18N = True
+USE_L10N = True
 
 USE_TZ = True
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('az', 'Azerbaijani'),
+    ('ru', 'Russian'),
+]
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-
 # Add this line to define the directory where static files will be collected
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = 'static/'
+django_heroku.settings(locals())
 
 # If you plan to store static files manually in the app
-# STATICFILES_DIRS = [
-    # This is where you can store custom static files
-# ]
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
 
 
 # Default primary key field type
@@ -152,4 +176,6 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'group39cs2340@gmail.com'
 EMAIL_HOST_PASSWORD = 'kgep hzsu zway hdtq'
+# DEFAULT_FROM_EMAIL = 'Spotify Wrapped Project'
 
+# os.environ['SSL_CERT_FILE'] = certifi.where()
