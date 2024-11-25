@@ -4,48 +4,59 @@
 
 {% block content %}
 
-    <div>
-        <div class="index-outer-box">
-            <div class="index-left-box">
-                <div class="index-text-box">{% trans "Here are your top 5 songs:" %}<br>
+<div>
+    <div class="index-outer-box">
+        <div class="index-left-box">
+            <div class="index-text-box">
+                {% if top_songs and top_songs.0 != "None (Spotify was not used during the time interval selected)" %}
+                    {% trans "Here are your top 5 songs:" %}<br>
                     {% for song in top_songs %}
                         {{ forloop.counter }}. {{ song }} <br>
                     {% endfor %}
-                </div>
+                {% else %}
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% if LANGUAGE_CODE == "az" %}
+                        Seçilmiş zaman aralığında Spotify istifadə edilməyib.
+                    {% elif LANGUAGE_CODE == "es" %}
+                        No se ha utilizado Spotify durante el intervalo seleccionado.
+                    {% else %}
+                        Spotify was not used during the selected time interval.
+                    {% endif %}
+                {% endif %}
             </div>
+        </div>
         {% if request.session.theme == 'light' %}
             <img class="wrap-img" src="{% static 'img/wrap-icons/library_music_black.png' %}" alt="library music image">
         {% else %}
             <img class="wrap-img" src="{% static 'img/wrap-icons/library_music.png' %}" alt="library music image">
         {% endif %}
-        </div>
-        <div class="wrap-next-container">
-            <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=5 wrap_id=wrap_num%}">{% trans "Next" %}</a>
-            {% if request.session.theme == 'light' %}
-            <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios_black.png' %}" alt="forward arrow">
-            {% else %}
-            <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
-            {% endif %}
-        </div>
     </div>
+    <div class="wrap-next-container">
+        <a class="wrap-next" href="{% url 'view_wrap_with_id' page_num=5 wrap_id=wrap_num %}">{% trans "Next" %}</a>
+        {% if request.session.theme == 'light' %}
+        <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios_black.png' %}" alt="forward arrow">
+        {% else %}
+        <img class="arrow_forward_ios" src="{% static 'img/wrap-icons/arrow_forward_ios.png' %}" alt="forward arrow">
+        {% endif %}
+    </div>
+</div>
 
-
-    {% if request.session.theme == 'light' %}
-    <a href="{% url 'contact' %}" style="
-        position: fixed;
-        bottom: 3%;
-        left: 4%;
-        width: 230px;
-        height: 75px;
-        background-image: url({% static 'img/footer-icon-light.svg' %});
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-    "></a>
-    {% else %}
-    <a href="{% url 'contact' %}" class="meet-team-button"></a>
-    {% endif %}
+{% if request.session.theme == 'light' %}
+<a href="{% url 'contact' %}" style="
+    position: fixed;
+    bottom: 3%;
+    left: 4%;
+    width: 230px;
+    height: 75px;
+    background-image: url({% static 'img/footer-icon-light.svg' %});
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+"></a>
+{% else %}
+<a href="{% url 'contact' %}" class="meet-team-button"></a>
+{% endif %}
 
 {% endblock %}
