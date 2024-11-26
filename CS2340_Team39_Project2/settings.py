@@ -97,17 +97,27 @@ WSGI_APPLICATION = 'CS2340_Team39_Project2.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dflv8lm2kb322k',
-        'USER': 'uamnb8ffd1ghc3',
-        'PASSWORD': 'p5c30663591a8c49b718272440a7b744b818a432b1f1e0f3f52c28a975e573eef',
-        'HOST': 'c8m0261h0c7idk.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
-        'PORT': '5432',
+# Database configuration
+if 'test' in sys.argv or 'pytest' in sys.modules:
+    # Use SQLite for tests
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
     }
-}
+else:
+    # Use PostgreSQL in production
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'dflv8lm2kb322k',
+            'USER': 'uamnb8ffd1ghc3',
+            'PASSWORD': 'p5c30663591a8c49b718272440a7b744b818a432b1f1e0f3f52c28a975e573eef',
+            'HOST': 'c8m0261h0c7idk.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
+            'PORT': '5432',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
