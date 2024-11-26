@@ -29,6 +29,7 @@ jobs:
         python -m venv venv
         source venv/bin/activate
         pip install -r requirements.txt
+        pip install pytest-django
 
     - name: Lint code (pylint)
       run: |
@@ -41,9 +42,7 @@ jobs:
         DJANGO_SETTINGS_MODULE: CS2340_Team39_Project2.settings
       run: |
         source venv/bin/activate
-        pip install pytest coverage
-        # Initialize Django explicitly
-        python -m django check
+        pip install pytest coverage pytest-django
         # Run pytest on the tests file
         coverage run -m pytest spotify_wrapped/tests.py
         coverage report --fail-under=80
