@@ -497,12 +497,12 @@ def create_wrap_for_timeframe(user_profile, timeframe):
     message_template = [
         {
             "role": "system",
-            "content": "You are a creative assistant that writes personalized and engaging blurbs about fashion styles based on a user's Spotify Wrapped music data."
+            "content": "You are a person who knows all about this other person's spotify data"
         },
         {
             "role": "user",
             "content": (
-                f"Write a fashion blurb based on the following Spotify Wrapped data, in 50 words or less:\n\n"
+                f"Write exactly what that person would think, act and tell exact clothing from top to bottom that they would wear like using that spotify wrapped data, in 60 words or less:\n\n"
                 f"Top Songs: {', '.join(top_songs)}\n"
                 f"Top Artists: {', '.join(top_artists)}\n"
                 f"Top Genres: {', '.join(top_genres)}\n"

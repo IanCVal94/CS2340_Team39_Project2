@@ -40,6 +40,5 @@ jobs:
       run: |
         source venv/bin/activate
         pip install pytest coverage
-        coverage run -m pytest
+        coverage run -m pytest spotify_wrapped/tests.py
         coverage report --fail-under=80
-        

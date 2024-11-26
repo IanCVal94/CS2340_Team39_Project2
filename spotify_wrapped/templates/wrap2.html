@@ -5,11 +5,29 @@
 {% block content %}
 
 <div>
+    {% if request.session.theme == 'light' %}
+        <div style="
+        text-align: center;
+        font-size: 64px; /* Larger font size for title */
+        font-family: 'Georgia', serif;
+        font-weight: 700; /* Bold font weight for emphasis */
+        line-height: 1.2; /* Adjust line spacing for readability */
+        margin: 100px 0 -100px; /* Add vertical spacing */
+        color: black;">{% trans "Here are your top 5 artists:" %}<br></div>
+    {% else %}
+        <div style="
+        text-align: center;
+        font-size: 64px; /* Larger font size for title */
+        font-family: 'Georgia', serif;
+        font-weight: 700; /* Bold font weight for emphasis */
+        line-height: 1.2; /* Adjust line spacing for readability */
+        margin: 100px 0 -100px; /* Add vertical spacing */
+        color: #FFF;">{% trans "Here are your top 5 artists:" %}<br></div>
+    {% endif %}
     <div class="index-outer-box">
         <div class="index-left-box">
             <div class="index-text-box">
                 {% if top_artists and top_artists.0 != "None (Spotify was not used during the time interval selected)" %}
-                    {% trans "Here are your top 5 artists:" %}<br>
                     {% for artist in top_artists %}
                         {{ forloop.counter }}. {{ artist }} <br>
                     {% endfor %}
