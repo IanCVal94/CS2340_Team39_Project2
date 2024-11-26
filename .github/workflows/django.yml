@@ -37,6 +37,8 @@ jobs:
         pylint --ignore=spotify_wrapped/migrations spotify_wrapped/ --exit-zero
 
     - name: Run tests with coverage
+      env:
+        DJANGO_SETTINGS_MODULE: CS2340_Team39_Project2.settings
       run: |
         source venv/bin/activate
         pip install pytest coverage
