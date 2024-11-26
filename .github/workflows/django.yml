@@ -36,6 +36,7 @@ jobs:
         DJANGO_SETTINGS_MODULE: CS2340_Team39_Project2.settings
       run: |
         source venv/bin/activate
+        python manage.py makemigrations
         python manage.py migrate
 
     - name: Run tests with coverage
