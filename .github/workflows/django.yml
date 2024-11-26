@@ -42,5 +42,8 @@ jobs:
       run: |
         source venv/bin/activate
         pip install pytest coverage
+        # Initialize Django explicitly
+        python -m django check
+        # Run pytest on the tests file
         coverage run -m pytest spotify_wrapped/tests.py
         coverage report --fail-under=80
