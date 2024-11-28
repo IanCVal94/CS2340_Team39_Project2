@@ -483,13 +483,13 @@ def create_wrap_for_timeframe(user_profile, timeframe):
     # Get the top 5 genres, or use fallback if empty
     top_genres = [genre for genre, count in genre_counter.most_common(5)]
     if not top_genres:
-        top_genres = ["None (Spotify was not used during the time interval selected)"]
+        top_genres = ["Unfortunately, due to stricter spotify API restrictions, we can no longer show this :("]
 
     # Ensure fallback for any empty sections
     if not top_songs:
         top_songs = ["None (Spotify was not used during the time interval selected)"]
     if not top_artists:
-        top_artists = ["None (Spotify was not used during the time interval selected)"]
+        top_artists = ["Unfortunately, due to stricter spotify API restrictions, we can no longer show this :("]
 
     num_distinct_artists = len(set(artist for artist in top_artists if artist != "None (Spotify was not used)"))
     num_genres = len(set(top_genres)) if top_genres[0] != "None (Spotify was not used)" else 0
