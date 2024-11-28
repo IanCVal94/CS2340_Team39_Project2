@@ -27,11 +27,11 @@
     <div class="index-outer-box">
         <div class="index-left-box">
             <div class="index-text-box">
-                {% if top_genres and top_genres.0 != "Unfortunately, due to stricter spotify API restrictions, we can no longer show this :(" %}
-                    {% for genre in top_genres %}
-                        {{ forloop.counter }}. {% blocktrans %} {{ genre }} {% endblocktrans %}<br>
-                    {% endfor %}
-                {% else %}
+{#                {% if top_genres and top_genres.0 != "Unfortunately, due to stricter spotify API restrictions, we can no longer show this :(" %}#}
+{#                    {% for genre in top_genres %}#}
+{#                        {{ forloop.counter }}. {% blocktrans %} {{ genre }} {% endblocktrans %}<br>#}
+{#                    {% endfor %}#}
+{#                {% else %}#}
                     {% get_current_language as LANGUAGE_CODE %}
                     {% if LANGUAGE_CODE == "az" %}
                         Təəssüf ki, daha sərt spotify API məhdudiyyətlərinə görə biz bunu artıq göstərə bilmirik :(
@@ -40,7 +40,7 @@
                     {% else %}
                         Unfortunately, due to stricter spotify API restrictions, we can no longer show this :(
                     {% endif %}
-                {% endif %}
+{#                {% endif %}#}
             </div>
         </div>
         {% if request.session.theme == 'light' %}
