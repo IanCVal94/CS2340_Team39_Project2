@@ -27,16 +27,16 @@
     <div class="index-outer-box">
         <div class="index-left-box">
             <div class="index-text-box">
-                {% if top_artists and top_artists.0 != "None (Spotify was not used during the time interval selected)" %}
+                {% if top_artists and top_artists.0 != "Unfortunately, due to stricter spotify API restrictions, we can no longer show this :(" %}
                     {% for artist in top_artists %}
                         {{ forloop.counter }}. {{ artist }} <br>
                     {% endfor %}
                 {% else %}
                     {% get_current_language as LANGUAGE_CODE %}
                     {% if LANGUAGE_CODE == "az" %}
-                        Sizin üçün Spotify istifadə edilməyib.
-                    {% elif LANGUAGE_CODE == "es" %}
-                        No se ha utilizado Spotify durante el intervalo seleccionado.
+                        Təəssüf ki, daha sərt spotify API məhdudiyyətlərinə görə biz bunu artıq göstərə bilmirik :(
+                    {% elif LANGUAGE_CODE == "ru" %}
+                        К сожалению, из-за более строгих ограничений API Spotify мы больше не можем это показывать :(
                     {% else %}
                         Spotify was not used during the selected time interval.
                     {% endif %}
